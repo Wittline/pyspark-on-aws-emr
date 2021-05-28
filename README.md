@@ -4,7 +4,7 @@ Create EMR
 
 Throw job
 
-terminate emr
+Terminate emr
 
 
 
