@@ -2,12 +2,10 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
-logger = logging.getLogger(__name__)
-
 
 def run_job_flow(
         name, log_uri, keep_alive, applications, job_flow_role, service_role,
-        security_groups, steps):
+        security_groups, logger):
 
     try:
         emr_client = boto3.client('emr')
@@ -41,9 +39,10 @@ def run_job_flow(
         return cluster_id
 
 
-def describe_cluster(cluster_id, emr_client):
+def describe_cluster(cluster_id, logger):
 
     try:
+        emr_client = boto3.client('emr')
         response = emr_client.describe_cluster(ClusterId=cluster_id)
         cluster = response['Cluster']
         logger.info("Got data for cluster %s.", cluster['Name'])
@@ -54,9 +53,10 @@ def describe_cluster(cluster_id, emr_client):
         return cluster
 
 
-def terminate_cluster(cluster_id, emr_client):
+def terminate_cluster(cluster_id, logger):
 
     try:
+        emr_client = boto3.client('emr')
         emr_client.terminate_job_flows(JobFlowIds=[cluster_id])
         logger.info("Terminated cluster %s.", cluster_id)
     except ClientError:
@@ -64,9 +64,10 @@ def terminate_cluster(cluster_id, emr_client):
         raise
 
 
-def add_step(cluster_id, name, script_uri, script_args, emr_client):
+def add_step(cluster_id, name, script_uri, script_args, logger):
 
     try:
+        emr_client = boto3.client('emr')
         response = emr_client.add_job_flow_steps(
             JobFlowId=cluster_id,
             Steps=[{
@@ -87,9 +88,10 @@ def add_step(cluster_id, name, script_uri, script_args, emr_client):
         return step_id
 
 
-def list_steps(cluster_id, emr_client):
+def list_steps(cluster_id, logger):
 
     try:
+        emr_client = boto3.client('emr')
         response = emr_client.list_steps(ClusterId=cluster_id)
         steps = response['Steps']
         logger.info("Got %s steps for cluster %s.", len(steps), cluster_id)
@@ -100,9 +102,10 @@ def list_steps(cluster_id, emr_client):
         return steps
 
 
-def describe_step(cluster_id, step_id, emr_client):
+def describe_step(cluster_id, step_id, logger):
 
     try:
+        emr_client = boto3.client("emr")
         response = emr_client.describe_step(ClusterId=cluster_id, StepId=step_id)
         step = response['Step']
         logger.info("Got data for step %s.", step_id)
@@ -111,3 +114,19 @@ def describe_step(cluster_id, step_id, emr_client):
         raise
     else:
         return step
+
+
+def list_clusters(logger):
+
+    try:    
+        emr_client = boto3.client("emr")
+        response = emr_client.list_clusters(
+            ClusterStates=[
+                'STARTING','BOOTSTRAPPING','RUNNING','WAITING','TERMINATING','TERMINATED','TERMINATED_WITH_ERRORS',
+            ]
+        )
+        for cluster in response['Clusters']:
+            print(f"Cluster: {cluster['Name']}  Id: {cluster['Id']}")
+    except ClientError:
+        logger.exception("Couldn't get data about clusters")
+        raise

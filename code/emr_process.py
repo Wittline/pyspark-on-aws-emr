@@ -4,6 +4,7 @@ import time
 import boto3
 from botocore.exceptions import ClientError
 import emr
+import iam
 import ec2
 import s3
 import poller
@@ -11,12 +12,13 @@ import poller
 logger = logging.getLogger(__name__)
 
 
-def create_cluster(prefix = 'cluster_default'):
+def create_cluster(cfile, prefix = 'cluster_default'):
 
-    
+    folders = ['scripts', 'logs', 'output', 'input']
+
     prefix = f'{prefix}-{time.time_ns()}'
 
-    bucket = s3.create_bucket(prefix, logger)
+    bucket = s3.create_bucket(prefix, folders, logger)
 
     job_flow_role, service_role = iam.create_roles(
         f'{prefix}-ec2-role', 
@@ -38,7 +40,7 @@ def create_cluster(prefix = 'cluster_default'):
                 ['Hadoop', 'Hive', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups)
+                security_groups, logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:
@@ -80,7 +82,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.Action == 'create-cluster':
-        create_cluster(args.cname, args.cfile)
+        create_cluster(args.cfile, args.cname)
     elif args.Action == 'list-clusters':
         list_cluster()
     elif args.Action == 'terminate-cluster':

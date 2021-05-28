@@ -3,7 +3,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 
-def create_bucket(bucket_name, logger):
+def create_bucket(bucket_name, folders, logger):
 
     try:
         s3_resource = boto3.resource('s3')
@@ -18,6 +18,15 @@ def create_bucket(bucket_name, logger):
     except ClientError:
         logger.exception("Couldn't create bucket %s.", bucket_name)
         raise
+
+
+    try:
+        for folder in folders:
+            s3_resource.put_object(Bucket= bucket_name, Body='', Key=folder + '/')
+            logger.info("Folder created %s.", f'{bucket_name}/{folder}')
+    except ClientError:
+        logger.exception("Couldn't create folder %s.", folder)
+        raise    
 
     return bucket
     
