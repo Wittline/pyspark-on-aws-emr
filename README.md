@@ -2,3 +2,9 @@
 
 Create EMR
 
+Throw job
+
+terminate emr
+
+
+
