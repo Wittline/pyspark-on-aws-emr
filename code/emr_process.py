@@ -105,16 +105,25 @@ def terminate_cluster(cluster_id, remove_all = False):
             f"Remember that objects kept in Amazon S3 bucket can incur charges")
 
 
+def add_steps(sfile, cluster_id):
+    
+
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a','--Action', type=str, help = "Type of actions", metavar = '', choices=['create_cluster', 
-                                                                                      'list_clusters',
-                                                                                      'terminate_cluster',
-                                                                                      'add_steps',
-                                                                                      'delete_steps',
-                                                                                      'execute_steps'])
+    parser.add_argument('-a',
+                        '--Action', 
+                        type=str, 
+                        help = "Type of actions", 
+                        metavar = '', 
+                        choices=['create_cluster',
+                                'list_clusters',
+                                'terminate_cluster',
+                                'add_steps',
+                                'delete_steps',
+                                'execute_steps'])
 
 
     # Create cluster
