@@ -45,7 +45,7 @@ def delete_security_groups(prefix_name, logger):
             print('{} {}'.format(sg.id, sg.group_name))
 
         for sg in sgs_to_delete:
-            logger.info('Revoking ingress{}'.format(sg.group_name))
+            logger.info('Revoking ingress {}'.format(sg.group_name))
             try:
                 if sg.ip_permissions:
                     sg.revoke_ingress(IpPermissions=sg.ip_permissions)

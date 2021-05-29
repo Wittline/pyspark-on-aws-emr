@@ -1,7 +1,6 @@
 import logging
 import json
 import boto3
-import iam
 from botocore.exceptions import ClientError
 
 
@@ -84,17 +83,25 @@ def create_roles(job_flow_role_name, service_role_name, iam_resource, logger):
     return job_flow_role, service_role
 
 
-def delete_roles(roles, logger):
+def delete_roles(prefix_name, logger):
+            
+    try:
+        iam_resource = boto3.resource('iam')
+        job_flow_role = f'{prefix_name}-ec2-role'
+        iam_resource.detach_role_policy(RoleName=job_flow_role, PolicyArn="arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role")
+        iam_resource.delete_role(RoleName=job_flow_role)
+        logger.info("Detached policies and deleted role %s.", job_flow_role)
+    except ClientError:
+        logger.exception("Couldn't delete role %s.", job_flow_role)
+        raise
+    
 
     try:
-        for role in roles:
-            for policy in role.attached_policies.all():
-                role.detach_policy(PolicyArn=policy.arn)
-            for inst_profile in role.instance_profiles.all():
-                inst_profile.remove_role(RoleName=role.name)
-                inst_profile.delete()
-            role.delete()
-            logger.info("Detached policies and deleted role %s.", role.name)
+        iam_resource = boto3.resource('iam')
+        service_role =  f'{prefix_name}-service-role'
+        iam_resource.detach_role_policy(RoleName=service_role, PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceRole')
+        iam_resource.delete_role(RoleName=service_role)        
+        logger.info("Detached policies and deleted role %s.", service_role)
     except ClientError:
-        logger.exception("Couldn't delete roles %s.", [role.name for role in roles])
+        logger.exception("Couldn't delete role %s.", service_role)
         raise

@@ -63,8 +63,6 @@ def terminate_cluster(cluster_id, remove_all = False):
     
     cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
     prefix_name = cluster_name.replace("cluster-", '')
-    job_flow_role = f'{prefix_name}-ec2-role'
-    service_role =  f'{prefix_name}-service-role'
 
     emr.terminate_cluster(cluster_id, logger)
 
@@ -73,8 +71,8 @@ def terminate_cluster(cluster_id, remove_all = False):
         f"Do you want to delete the security roles, groups, and bucket (y/n)? ")
 
         if remove_everything.lower() == 'y':
-                iam.delete_roles([job_flow_role, service_role])
-                ec2.delete_security_groups(security_groups, logger)
+                iam.delete_roles(prefix_name,logger)
+                ec2.delete_security_groups(prefix_name, logger)
                 s3.delete_bucket(prefix_name)
         else:
             print(f"Remember that objects kept in Amazon can incur charges")
@@ -83,7 +81,7 @@ def terminate_cluster(cluster_id, remove_all = False):
         f"Do you want to delete the security roles (y/n)? ")
 
         if remove_sr.lower() == 'y':
-            iam.delete_roles([job_flow_role, service_role], logger)
+            iam.delete_roles(prefix_name, logger)
         else:
             print(
             f"Remember that objects kept in Amazon can incur charges")
@@ -92,7 +90,7 @@ def terminate_cluster(cluster_id, remove_all = False):
         f"Do you want to delete the security groups (y/n)? ")
 
         if remove_sg.lower() == 'y':
-            ec2.delete_security_groups(security_groups, prefix_name, logger)
+            ec2.delete_security_groups(prefix_name, logger)
         else:
             print(
             f"Remember that objects kept in Amazon can incur charges")
