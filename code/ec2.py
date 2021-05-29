@@ -45,46 +45,32 @@ def delete_security_groups(prefix_name, logger):
             print('{} {}'.format(sg.id, sg.group_name))
 
         for sg in sgs_to_delete:
-            logger.info('Revoking {}'.format(sg.group_name))
+            logger.info('Revoking ingress{}'.format(sg.group_name))
             try:
                 if sg.ip_permissions:
                     sg.revoke_ingress(IpPermissions=sg.ip_permissions)
             except ClientError:
+                logger.exception("Couldn't revoke ingress to %s.", sg.group_name)
                 raise
 
-        for sg in sgs_to_delete:
-            logger.info('Deleting {}'.format(sg.group_name))
-            try:
-                sg.delete()
-            except ClientError:
-                raise
-
-    except ClientError:
-        logger.exception("Couldn't delete security groups %s.", security_groups)
-        raise
-
-
-    try:
-        ec2_resource = boto3.resource('ec2')
-        for sg in security_groups.values():
-            sg.revoke_ingress(IpPermissions=sg.ip_permissions)
-        max_tries = 5
+        max_tries = 5  
         while True:
             try:
-                for sg in security_groups.values():
+                for sg in sgs_to_delete:
+                    logger.info('Deleting group name {}'.format(sg.group_name))
                     sg.delete()
                 break
             except ClientError as error:
                 max_tries -= 1
                 if max_tries > 0 and \
                         error.response['Error']['Code'] == 'DependencyViolation':
-                    logger.warning(
+                     logger.warning(
                         "Attempt to delete security group got DependencyViolation. "
                         "Waiting for 10 seconds to let things propagate.")
-                    time.sleep(10)
+                     time.sleep(10)
                 else:
                     raise
-        logger.info("Deleted security groups %s.", security_groups)
+        logger.info("Deleted security groups")                  
     except ClientError:
-        logger.exception("Couldn't delete security groups %s.", security_groups)
+        logger.exception("Couldn't delete security groups with prefix %s.", prefix_name)
         raise
