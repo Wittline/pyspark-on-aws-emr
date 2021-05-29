@@ -55,9 +55,39 @@ def create_cluster(cfile, prefix = 'cluster_default'):
 def list_clusters():
     emr.list_clusters(logger)
 
-def terminate_cluster(cluster_id):
+def terminate_cluster(cluster_id, remove_all = False):
     
+    cluste_name = emr.describe_cluster(cluster_id, logger)['Name']
 
+    emr.terminate_cluster(cluster_id, logger)
+
+    if remove_all:
+        remove_everything = input(
+        f"Do you want to delete the security roles, groups, and bucket (y/n)? ")
+    else:
+        remove_sr = input(
+        f"Do you want to delete the security roles (y/n)? ")
+        if remove_sr.lower() == 'y':
+            iam.delete_roles([job_flow_role, service_role])
+        else:
+            print(
+            f"Remember that objects kept in Amazon can incur charges")
+
+        remove_sg = input(
+        f"Do you want to delete the security groups (y/n)? ")
+        if remove_sg.lower() == 'y':
+            ec2.delete_security_groups(security_groups, logger)
+        else:
+            print(
+            f"Remember that objects kept in Amazon can incur charges")
+
+        remove_s3 = input(
+        f"Do you want to delete the S3 bucket (y/n)? ")
+        if remove_s3.lower() == 'y':
+            s3.delete_bucket(bucket)
+        else:
+            print(
+            f"Remember that objects kept in Amazon S3 bucket can incur charges")
 
 
 

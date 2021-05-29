@@ -35,6 +35,7 @@ def create_security_groups(prefix, logger):
 def delete_security_groups(security_groups, logger):
 
     try:
+        ec2_resource = boto3.resource('ec2')
         for sg in security_groups.values():
             sg.revoke_ingress(IpPermissions=sg.ip_permissions)
         max_tries = 5
