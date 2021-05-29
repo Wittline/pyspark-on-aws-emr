@@ -61,10 +61,12 @@ def setup_bucket(bucket_name, script_file_name, script_key, logger):
 
 def delete_bucket(bucket, logger):
 
-    try:
+    try:        
+        s3_resource = boto3.resource('s3')
+        bucket = s3_resource.Bucket(bucket)
         bucket.objects.delete()
         bucket.delete()
-        logger.info("Emptied and removed bucket %s.", bucket.name)
+        logger.info("Emptied and removed bucket %s.", bucket)
     except ClientError:
-        logger.exception("Couldn't remove bucket %s.", bucket.name)
+        logger.exception("Couldn't remove bucket %s.", bucket)
         raise
