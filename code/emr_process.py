@@ -14,7 +14,11 @@ logger = logging.getLogger(__name__)
 
 def create_cluster(cfile, prefix = 'cluster_default'):
 
-    folders = ['scripts', 'logs', 'output', 'input']
+    if prefix.find("cluster") < 0:
+        print("The cluster name cannot contain the word 'cluster'")
+        return 
+
+    folders = ['scripts', 'logs', 'steps', 'output', 'input']
 
     prefix = f'{prefix}-{time.time_ns()}'
 
@@ -34,7 +38,7 @@ def create_cluster(cfile, prefix = 'cluster_default'):
     while True:
         try:
             cluster_id = emr.run_job_flow(
-                f'{prefix}-cluster',
+                f'cluster-{prefix}',
                 f's3://{prefix}/logs',
                 True, 
                 ['Hadoop', 'Hive', 'Spark'], 
@@ -58,6 +62,7 @@ def list_clusters():
 def terminate_cluster(cluster_id, remove_all = False):
     
     cluste_name = emr.describe_cluster(cluster_id, logger)['Name']
+    bucket_name = cluste_name.replace("cluster-", '')
 
     emr.terminate_cluster(cluster_id, logger)
 
@@ -84,7 +89,7 @@ def terminate_cluster(cluster_id, remove_all = False):
         remove_s3 = input(
         f"Do you want to delete the S3 bucket (y/n)? ")
         if remove_s3.lower() == 'y':
-            s3.delete_bucket(bucket)
+            s3.delete_bucket(bucket_name)
         else:
             print(
             f"Remember that objects kept in Amazon S3 bucket can incur charges")
