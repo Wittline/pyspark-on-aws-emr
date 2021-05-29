@@ -32,7 +32,37 @@ def create_security_groups(prefix, logger):
     return groups
 
 
-def delete_security_groups(security_groups, logger):
+def delete_security_groups(prefix_name, logger):
+        
+    try:
+
+        ec2_resource = boto3.resource('ec2')
+        sgs = list(ec2_resource.security_groups.all())
+
+        sgs_to_delete = [sg for sg in sgs if sg.group_name.startswith(prefix_name)]
+
+        for sg in sgs_to_delete:
+            print('{} {}'.format(sg.id, sg.group_name))
+
+        for sg in sgs_to_delete:
+            logger.info('Revoking {}'.format(sg.group_name))
+            try:
+                if sg.ip_permissions:
+                    sg.revoke_ingress(IpPermissions=sg.ip_permissions)
+            except ClientError:
+                raise
+
+        for sg in sgs_to_delete:
+            logger.info('Deleting {}'.format(sg.group_name))
+            try:
+                sg.delete()
+            except ClientError:
+                raise
+
+    except ClientError:
+        logger.exception("Couldn't delete security groups %s.", security_groups)
+        raise
+
 
     try:
         ec2_resource = boto3.resource('ec2')
