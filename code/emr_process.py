@@ -105,10 +105,29 @@ def terminate_cluster(cluster_id, remove_all = False):
             f"Remember that objects kept in Amazon S3 bucket can incur charges")
 
 
+
 def add_steps(sfile, cluster_id):
+
+    step_id = emr.add_step(
+        cluster_id, f'Calculate {output_folder}',
+        f's3://{bucket.name}/{script_key}',
+        ['--category', category, '--title_keyword', keyword,
+         '--count', count, '--output_uri', f's3://{bucket.name}/{output_folder}'],
+        emr_client)
+
+    status_poller(
+        "Waiting for step to complete...",
+        'COMPLETED',
+        lambda:
+        emr_basics.describe_step(cluster_id, step_id, emr_client)['Status']['State'])
+
+    print(f"The output for this step is in Amazon S3 bucket "
+          f"{bucket.name}/{output_folder}.")
+    print('-'*88)
+    for obj in bucket.objects.filter(Prefix=output_folder):
+        print(obj.get()['Body'].read().decode())
+    print('-'*88)
     
-
-
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
