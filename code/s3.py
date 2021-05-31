@@ -47,9 +47,9 @@ def upload_to_bucket(bucket_name, f, folder, logger):
         raise
 
 
-def put_object(bucket_name, jsd, folder, cluster_id,  logger):
+def put_object(bucket_name, jsd, folder, filename,  cluster_id,  logger):
     try:
-        Key_name= f'{folder}/{cluster_id}_{folder}.json'
+        Key_name= f'{folder}/{cluster_id}_{filename}.json'
         s3_resource = boto3.client('s3')
         s3_resource.put_object(Bucket= bucket_name,  
                                Body=(bytes(json.dumps(jsd).encode('UTF-8'))), 
@@ -61,6 +61,16 @@ def put_object(bucket_name, jsd, folder, cluster_id,  logger):
         logger.exception("Couldn't create folder %s.", folder)
         raise    
 
+def get_json_data(bucket_name, folder,  filename, cluster_id, logger):
+    try:
+        filename = f'{folder}/{cluster_id}_{filename}.json'
+        s3_resource = boto3.client('s3')
+        s3_obj = s3_resource.get_object(Bucket=bucket_name, Key=filename)
+        s3_data= s3_obj['Body'].read().decode('utf-8')
+        return json.loads(s3_data)
+    except ClientError:
+        logger.exception("Couldn't get the file %s.", filename)
+        raise
 
 def delete_bucket(bucket, logger):
 
