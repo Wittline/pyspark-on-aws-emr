@@ -1,9 +1,9 @@
-"steps":[
+[
     {
         "description" : "example of the first step",
         "name": "step_0",
         "id": "",
-        "ActionOnFailure": 'CANCEL_AND_WAIT',
+        "ActionOnFailure": "CANCEL_AND_WAIT",
         "script_uri":"my_pyspark_code_1.py",
         "script_args": 
         {             
@@ -18,7 +18,7 @@
         "description" : "example of the second step",
         "name": "step_1",
         "id": "",
-        "ActionOnFailure": 'CANCEL_AND_WAIT',
+        "ActionOnFailure": "CANCEL_AND_WAIT",
         "script_uri":"my_pyspark_code_2.py",
         "script_args": 
         {             
