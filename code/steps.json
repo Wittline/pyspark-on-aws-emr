@@ -12,7 +12,7 @@
                 "auto_generate_output": true, 
                 "output_uri": "",
                 "format_output": ".csv",
-                "input_dependency_from_output_step":  ,
+                "input_dependency_from_output_step": false,
                 "from_step": "",
                 "input_data": "input_data.csv"
             }

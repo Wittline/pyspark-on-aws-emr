@@ -106,6 +106,10 @@ def terminate_cluster(cluster_id, remove_all = False):
             print(
             f"Remember that objects kept in Amazon S3 bucket can incur charges")
 
+def get_output_step(jsd, step):
+    for s in jsd['steps']:
+        if s['name'] == step:
+            return s['script_args']['output_uri']
 
 
 def add_steps(sfile, cluster_id):
@@ -123,11 +127,22 @@ def add_steps(sfile, cluster_id):
             print ("Preparing files for steps...")
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
-                s3.upload_to_bucket(prefix_name,sfile,'scripts',logger)
-                if s[]
-
+                s3.upload_to_bucket(prefix_name,sfile,'scripts',logger)        
+                if s['script_args']['auto_generate_output'] == True:
+                   s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
+                else:
+                   s['script_args']['output_uri'] = s['script_args']['output_uri']
+                
+                if s['script_args']['input_dependency_from_output_step'] == True:
+                   s['script_args']['input_data'] = get_output_step(data, s['script_args']['from_step'])
+                else:
+                   s['script_args']['input_data'] = f's3://{prefix_name}/input/' + s['script_args']['input_data']
+            
+            print ("The Steps were formated...")
+            s3.put_object(prefix_name,data,'steps',cluster_id, logger)
+            print ("The Steps were uploaded with the name: ")
         else:
-            print ("The steps for the cluster must be in .json format")            
+            print (f"The steps for the cluster {cluster_id} must be in .json format")            
     else:
         print (f"The file {sfile} does not exists")
         

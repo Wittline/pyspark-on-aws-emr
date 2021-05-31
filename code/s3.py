@@ -1,6 +1,7 @@
 import logging
 import boto3
 import os.path
+import json
 from botocore.exceptions import ClientError
 
 
@@ -44,6 +45,21 @@ def upload_to_bucket(bucket_name, f, folder, logger):
     except ClientError:
         logger.exception("Couldn't upload %s to %s.", object_name, bucket_name)
         raise
+
+
+def put_object(bucket_name, jsd, folder, cluster_id,  logger):
+    try:
+        Key_name= f'{folder}/{cluster_id}_{folder}.json'
+        s3_resource = boto3.client('s3')
+        s3_resource.put_object(Bucket= bucket_name,  
+                               Body=(bytes(json.dumps(jsd).encode('UTF-8'))), 
+                               Key= Key_name)
+
+        logger.info(
+            "Uploaded file %s to %s.", Key_name, f'{bucket_name}/{folder}')
+    except ClientError:
+        logger.exception("Couldn't create folder %s.", folder)
+        raise    
 
 
 def delete_bucket(bucket, logger):
