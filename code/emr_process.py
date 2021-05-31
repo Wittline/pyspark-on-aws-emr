@@ -145,7 +145,9 @@ def add_steps(sfile, cluster_id):
             print (f"The steps for the cluster {cluster_id} must be in .json format")            
     else:
         print (f"The file {sfile} does not exists")
-        
+
+def execute_steps(cluster_id):
+            
 
     # step_id = emr.add_step(
     #     cluster_id, f'Calculate {output_folder}',
@@ -208,9 +210,7 @@ if __name__ == '__main__':
     elif args.Action == 'terminate_cluster':
         terminate_cluster(args.cluster_id)
     elif args.Action == 'add_steps':
-        add_steps(args.sfile, args.cluster_id)
-    elif args.Action == 'delete_steps':
-        delete_steps(args.cluster_id)        
+        add_steps(args.sfile, args.cluster_id)        
     elif args.Action == 'execute_steps':
         execute_steps(args.cluster_id)
     else:
