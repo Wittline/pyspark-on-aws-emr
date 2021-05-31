@@ -8,13 +8,15 @@ import iam
 import ec2
 import s3
 import poller
+import json
+import os.path
 
 logger = logging.getLogger(__name__)
 
 
-def create_cluster(cfile, prefix = 'cluster_default'):
+def create_cluster(cfile, prefix = 'default'):
 
-    if prefix.find("cluster") < 0:
+    if prefix.find("cluster") >= 0:
         print("The cluster name cannot contain the word 'cluster'")
         return 
 
@@ -108,25 +110,42 @@ def terminate_cluster(cluster_id, remove_all = False):
 
 def add_steps(sfile, cluster_id):
 
-    step_id = emr.add_step(
-        cluster_id, f'Calculate {output_folder}',
-        f's3://{bucket.name}/{script_key}',
-        ['--category', category, '--title_keyword', keyword,
-         '--count', count, '--output_uri', f's3://{bucket.name}/{output_folder}'],
-        emr_client)
+    cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
+    prefix_name = cluster_name.replace("cluster-", '')
 
-    status_poller(
-        "Waiting for step to complete...",
-        'COMPLETED',
-        lambda:
-        emr_basics.describe_step(cluster_id, step_id, emr_client)['Status']['State'])
 
-    print(f"The output for this step is in Amazon S3 bucket "
-          f"{bucket.name}/{output_folder}.")
-    print('-'*88)
-    for obj in bucket.objects.filter(Prefix=output_folder):
-        print(obj.get()['Body'].read().decode())
-    print('-'*88)
+    if os.path.isfile(sfile):        
+        name, ext = os.path.splitext(sfile)
+        if ext.lower() == '.json':
+            f = open(sfile,)
+            data = json.load(f)
+            for i in data['steps']:
+                print(i['description'])    
+        else:
+            print ("The steps for the cluster must be in .json format")            
+    else:
+        print (f"The file {sfile} does not exists")
+        
+
+    # step_id = emr.add_step(
+    #     cluster_id, f'Calculate {output_folder}',
+    #     f's3://{bucket.name}/{script_key}',
+    #     ['--category', category, '--title_keyword', keyword,
+    #      '--count', count, '--output_uri', f's3://{bucket.name}/{output_folder}'],
+    #     emr_client)
+
+    # status_poller(
+    #     "Waiting for step to complete...",
+    #     'COMPLETED',
+    #     lambda:
+    #     emr_basics.describe_step(cluster_id, step_id, emr_client)['Status']['State'])
+
+    # print(f"The output for this step is in Amazon S3 bucket "
+    #       f"{bucket.name}/{output_folder}.")
+    # print('-'*88)
+    # for obj in bucket.objects.filter(Prefix=output_folder):
+    #     print(obj.get()['Body'].read().decode())
+    # print('-'*88)
     
 
 if __name__ == '__main__':
