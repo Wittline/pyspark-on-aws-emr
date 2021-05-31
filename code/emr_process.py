@@ -44,7 +44,7 @@ def create_cluster(cfile, prefix = 'cluster_default'):
                 ['Hadoop', 'Hive', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups, logger)
+                security_groups, [], logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:

@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 
 def run_job_flow(
         name, log_uri, keep_alive, applications, job_flow_role, service_role,
-        security_groups, logger):
+        security_groups, steps, logger):
 
     try:
         emr_client = boto3.client('emr')
@@ -21,6 +21,15 @@ def run_job_flow(
                 'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
                 'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
             },
+            Steps=[{
+                'Name': step['name'],
+                'ActionOnFailure': 'CONTINUE',
+                'HadoopJarStep': {
+                    'Jar': 'command-runner.jar',
+                    'Args': ['spark-submit', '--deploy-mode', 'cluster',
+                             step['script_uri'], *step['script_args']]
+                }
+            } for step in steps],
             Applications=[{
                 'Name': app
             } for app in applications],
