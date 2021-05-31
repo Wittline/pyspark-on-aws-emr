@@ -124,7 +124,7 @@ def add_steps(sfile, cluster_id):
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
                 s3.upload_to_bucket(prefix_name,sfile,'scripts',logger)
-
+                if s[]
 
         else:
             print ("The steps for the cluster must be in .json format")            

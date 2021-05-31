@@ -6,26 +6,28 @@
             "name": "step_0",
             "guiid": 0,
             "ActionOnFailure": "CANCEL_AND_WAIT",
-            "script_uri":"my_pyspark_code_1.py",
+            "script_uri":"C:/pyspark_code/my_pyspark_code_1.py",
             "script_args": 
             {             
                 "auto_generate_output": true, 
                 "output_uri": "",
-                "input_dependency_from_output_step": false,
+                "format_output": ".csv",
+                "input_dependency_from_output_step":  ,
                 "from_step": "",
-                "input_data": "input_data.csv"          
-            }       
+                "input_data": "input_data.csv"
+            }
         },
         {
             "description" : "example of the second step",
             "name": "step_1",
             "guiid": 1,
             "ActionOnFailure": "CANCEL_AND_WAIT",
-            "script_uri":"my_pyspark_code_2.py",
+            "script_uri":"C:/pyspark_code/my_pyspark_code_2.py",
             "script_args": 
             {             
                 "auto_generate_output": true, 
                 "output_uri": "",
+                "format_output": ".csv",
                 "input_dependency_from_output_step": true,
                 "from_step": "step_0",
                 "input_data": ""                    
