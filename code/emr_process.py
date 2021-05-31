@@ -147,7 +147,9 @@ def add_steps(sfile, cluster_id):
         print (f"The file {sfile} does not exists")
 
 def execute_steps(cluster_id):
-            
+
+    #Read steps from s3 
+
 
     # step_id = emr.add_step(
     #     cluster_id, f'Calculate {output_folder}',
