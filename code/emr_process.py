@@ -113,14 +113,19 @@ def add_steps(sfile, cluster_id):
     cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
     prefix_name = cluster_name.replace("cluster-", '')
 
-
+    print('-'*88)
+    print ("Reading steps...")
     if os.path.isfile(sfile):        
         name, ext = os.path.splitext(sfile)
         if ext.lower() == '.json':
             f = open(sfile,)
             data = json.load(f)
-            for i in data['steps']:
-                print(i['description'])    
+            print ("Preparing files for steps...")
+            for s in data['steps']:
+                print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
+                s3.upload_to_bucket(prefix_name,sfile,'scripts',logger)
+
+
         else:
             print ("The steps for the cluster must be in .json format")            
     else:
