@@ -36,8 +36,7 @@ def run_job_flow(
             JobFlowRole=job_flow_role.name,
             ServiceRole=service_role.name,
             EbsRootVolumeSize=10,
-            VisibleToAllUsers=True,
-            AutoTerminate = False
+            VisibleToAllUsers=True
         )
         cluster_id = response['JobFlowId']
         logger.info("Created cluster %s.", cluster_id)

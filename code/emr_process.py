@@ -18,7 +18,7 @@ def create_cluster(cfile, prefix = 'default'):
 
     if prefix.find("cluster") >= 0:
         print("The cluster name cannot contain the word 'cluster'")
-        return 
+        return
 
     folders = ['scripts', 'logs', 'steps', 'output', 'input']
 
@@ -28,9 +28,9 @@ def create_cluster(cfile, prefix = 'default'):
 
     job_flow_role, service_role = iam.create_roles(
         f'{prefix}-ec2-role', 
-        f'{prefix}-service-role')
+        f'{prefix}-service-role', logger)
 
-    security_groups = ec2.create_security_groups(prefix)
+    security_groups = ec2.create_security_groups(prefix, logger)
 
     print("Wait for 10 seconds to give roles and profiles time to propagate...")
 
@@ -75,7 +75,7 @@ def terminate_cluster(cluster_id, remove_all = False):
         if remove_everything.lower() == 'y':
                 iam.delete_roles(prefix_name,logger)
                 ec2.delete_security_groups(prefix_name, logger)
-                s3.delete_bucket(prefix_name)
+                s3.delete_bucket(prefix_name, logger)
         else:
             print(f"Remember that objects kept in Amazon can incur charges")
     else:
@@ -101,7 +101,7 @@ def terminate_cluster(cluster_id, remove_all = False):
         f"Do you want to delete the S3 bucket (y/n)? ")
 
         if remove_s3.lower() == 'y':
-            s3.delete_bucket(prefix_name)
+            s3.delete_bucket(prefix_name, logger)
         else:
             print(
             f"Remember that objects kept in Amazon S3 bucket can incur charges")
@@ -128,7 +128,7 @@ def add_steps(sfile, cluster_id):
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
                 filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
-                            
+
                 s['script_uri'] = f's3://{prefix_name}/{filename}'        
 
                 if s['script_args']['auto_generate_output'] == True:

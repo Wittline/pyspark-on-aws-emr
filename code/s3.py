@@ -23,6 +23,7 @@ def create_bucket(bucket_name, folders, logger):
 
 
     try:
+        s3_resource = boto3.client('s3')
         for folder in folders:
             s3_resource.put_object(Bucket= bucket_name, Body='', Key=folder + '/')
             logger.info("Folder created %s.", f'{bucket_name}/{folder}')
