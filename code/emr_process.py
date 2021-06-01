@@ -127,7 +127,10 @@ def add_steps(sfile, cluster_id):
             print ("Preparing files for steps...")
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
-                s3.upload_to_bucket(prefix_name,sfile,'scripts',logger)        
+                filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
+
+                s['script_uri'] = f's3://{bucket.name}/{filename}'        
+
                 if s['script_args']['auto_generate_output'] == True:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
                 else:
@@ -147,30 +150,30 @@ def add_steps(sfile, cluster_id):
         print (f"The file {sfile} does not exists")
 
 def execute_steps(cluster_id):
-
-    #Read steps from s3 
-
-
-    # step_id = emr.add_step(
-    #     cluster_id, f'Calculate {output_folder}',
-    #     f's3://{bucket.name}/{script_key}',
-    #     ['--category', category, '--title_keyword', keyword,
-    #      '--count', count, '--output_uri', f's3://{bucket.name}/{output_folder}'],
-    #     emr_client)
-
-    # status_poller(
-    #     "Waiting for step to complete...",
-    #     'COMPLETED',
-    #     lambda:
-    #     emr_basics.describe_step(cluster_id, step_id, emr_client)['Status']['State'])
-
-    # print(f"The output for this step is in Amazon S3 bucket "
-    #       f"{bucket.name}/{output_folder}.")
-    # print('-'*88)
-    # for obj in bucket.objects.filter(Prefix=output_folder):
-    #     print(obj.get()['Body'].read().decode())
-    # print('-'*88)
     
+    cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
+    prefix_name = cluster_name.replace("cluster-", '')
+
+    jsd = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
+
+    for s in jsd['steps']:
+        step_id = emr.add_step(
+            cluster_id, s['name'],
+            s['script_uri'], 
+            ['--auto_generate_output', s['script_args']['auto_generate_output'], 
+            '--output_uri', s['script_args']['output_uri'], 
+            '--format_output', s['script_args']['format_output'], 
+            '--input_dependency_from_output_step', s['script_args']['input_dependency_from_output_step'],
+            '--from_step', s['script_args']['from_step'],
+            '--input_data', s['script_args']['input_data'],
+             ])
+
+        poller.status_poller(
+            "Waiting for step to complete...",
+            'COMPLETED',
+            lambda:emr.describe_step(cluster_id, step_id)['Status']['State'])
+
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -192,7 +195,6 @@ if __name__ == '__main__':
     parser.add_argument('-c','--cname', type=str, help = "Name Cluster")
     parser.add_argument('-cfg','--cfile', type=str, help = "File with the fonfiguration of the emr cluster")
 
-
     # Terminate cluster
     parser.add_argument('-idc','--cluster_id', type=str, help = "Id of the cluster")
 
@@ -201,7 +203,6 @@ if __name__ == '__main__':
 
     # execute steps in clusters
     parser.add_argument('-execute_steps','--Execute steps in cluster', type=str, help = "execute steps involved to the clusters")    
-
 
     args = parser.parse_args()
 

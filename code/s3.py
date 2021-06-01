@@ -41,7 +41,8 @@ def upload_to_bucket(bucket_name, f, folder, logger):
         s3_resource.upload_file(f, bucket_name, object_name , ExtraArgs = None)
         logger.info(
             "Uploaded script %s to %s.", object_name,
-            f'{bucket_name}/{folder}')
+            f'{bucket_name}')
+        return object_name
     except ClientError:
         logger.exception("Couldn't upload %s to %s.", object_name, bucket_name)
         raise
@@ -61,7 +62,7 @@ def put_object(bucket_name, jsd, folder, filename,  cluster_id,  logger):
         logger.exception("Couldn't create folder %s.", folder)
         raise    
 
-def get_json_data(bucket_name, folder,  filename, cluster_id, logger):
+def get_data(bucket_name, folder,  filename, cluster_id, logger):
     try:
         filename = f'{folder}/{cluster_id}_{filename}.json'
         s3_resource = boto3.client('s3')
