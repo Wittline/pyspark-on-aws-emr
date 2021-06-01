@@ -173,7 +173,7 @@ def execute_steps(cluster_id):
             'COMPLETED',
             lambda:emr.describe_step(cluster_id, step_id)['Status']['State'])
 
-
+            
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
