@@ -128,8 +128,8 @@ def add_steps(sfile, cluster_id):
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
                 filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
-
-                s['script_uri'] = f's3://{bucket.name}/{filename}'        
+                            
+                s['script_uri'] = f's3://{prefix_name}/{filename}'        
 
                 if s['script_args']['auto_generate_output'] == True:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
@@ -143,7 +143,7 @@ def add_steps(sfile, cluster_id):
             
             print ("The Steps were formated...")
             s3.put_object(prefix_name,data,'steps',cluster_id, logger)
-            print ("The Steps were uploaded with the name: ")
+            print ("The Steps were uploaded")
         else:
             print (f"The steps for the cluster {cluster_id} must be in .json format")            
     else:
