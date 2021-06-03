@@ -22,7 +22,7 @@
             "name": "step_1",
             "guiid": 1,
             "ActionOnFailure": "CANCEL_AND_WAIT",
-            "script_uri":"C:/pyspark_code/my_pyspark_code_2.py",
+            "script_uri":"C:/pyspark_code/my_pyspark_code_2.pya",
             "script_args": 
             {             
                 "auto_generate_output": true, 
