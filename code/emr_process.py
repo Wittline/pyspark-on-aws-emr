@@ -157,6 +157,7 @@ def execute_steps(cluster_id):
     jsd = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
 
     for s in jsd['steps']:
+        
         step_id = emr.add_step(
             cluster_id, s['name'],
             s['script_uri'], 
