@@ -163,12 +163,11 @@ def execute_steps(cluster_id):
             ['--auto_generate_output', s['script_args']['auto_generate_output'], 
             '--output_uri', s['script_args']['output_uri'], 
             '--format_output', s['script_args']['format_output'], 
-            '--input_dependency_from_output_step', s['script_ar
-            gs']['input_dependency_from_output_step'],
+            '--input_dependency_from_output_step', s['script_args']['input_dependency_from_output_step'],
             '--from_step', s['script_args']['from_step'],
             '--input_data', s['script_args']['input_data'],
              ])
-
+             
         poller.status_poller(
             "Waiting for step to complete...",
             'COMPLETED',
