@@ -150,7 +150,7 @@ def add_steps(sfile, cluster_id):
         print (f"The file {sfile} does not exists")
 
 def execute_steps(cluster_id):
-    #starting each job
+  
     cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
     prefix_name = cluster_name.replace("cluster-", '')
 
