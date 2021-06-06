@@ -150,14 +150,14 @@ def add_steps(sfile, cluster_id):
         print (f"The file {sfile} does not exists")
 
 def execute_steps(cluster_id):
-    
+    #starting each job
     cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
     prefix_name = cluster_name.replace("cluster-", '')
 
     jsd = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
 
     for s in jsd['steps']:
-        
+
         step_id = emr.add_step(
             cluster_id, s['name'],
             s['script_uri'], 
