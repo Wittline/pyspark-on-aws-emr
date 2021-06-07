@@ -1,0 +1,71 @@
+{
+
+    "InstanceFleets": [
+        {
+            "Name": "fleetmaster",
+            "InstanceFleetType": "MASTER",
+            "TargetOnDemandCapacity": 1,
+            "InstanceTypeConfigs": [
+                {
+                    "InstanceType": "m5.xlarge"
+                }          
+            ]
+        },
+        {
+            "Name": "fleetcore",
+            "InstanceFleetType": "CORE",
+            "TargetOnDemandCapacity": 0,
+            "TargetSpotCapacity": 8,
+            "InstanceTypeConfigs": [
+                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.large"},
+                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.xlarge"},
+                {"WeightedCapacity":8,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"},
+                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"c4.xlarge"}
+            ],
+            "LaunchSpecifications": {
+                "SpotSpecification": {
+                    "TimeoutDurationMinutes": 60,
+                    "BlockDurationMinutes":60,
+                    "TimeoutAction": "TERMINATE_CLUSTER"
+                }
+            }
+        },
+        {
+            "Name": "fleettask",
+            "InstanceFleetType": "TASK",
+            "TargetOnDemandCapacity":0,
+            "TargetSpotCapacity": 40,
+            "InstanceTypeConfigs": [
+
+                    {"WeightedCapacity":4,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"r5a.xlarge"
+                    },
+                    {"WeightedCapacity":4,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"r5d.xlarge"
+                    },
+                    {"WeightedCapacity":4,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"r4.xlarge"
+                    },
+                    {"WeightedCapacity":4,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"m5.xlarge"
+                    },
+                    {"WeightedCapacity":4,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"r5.xlarge"
+                    }
+            ],
+            "LaunchSpecifications": {
+                "SpotSpecification": {
+                    "TimeoutDurationMinutes": 60,
+                    "BlockDurationMinutes":60,
+                    "TimeoutAction": "TERMINATE_CLUSTER",
+                }
+            }
+        }
+    ],
+    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ]
+}
