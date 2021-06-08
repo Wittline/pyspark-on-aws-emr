@@ -23,10 +23,10 @@ def run_job_flow(
                 f = open(cfile,)
                 fleets = json.load(f)
                 print ("Preparing fleets of ec2 spot instances for cluster...")
-                InstanceFleets.extend(fleets['InstanceFleets'])
-                Ec2SubnetIds.extend(fleets['Ec2SubnetIds'])
-                KeepJobFlowAliveWhenNoSteps = fleets['KeepJobFlowAliveWhenNoSteps']
                 try:
+                    InstanceFleets.extend(fleets['InstanceFleets'])
+                    Ec2SubnetIds.extend(fleets['Ec2SubnetIds'])
+                    KeepJobFlowAliveWhenNoSteps = fleets['KeepJobFlowAliveWhenNoSteps']               
                     emr_client = boto3.client('emr')
                     response = emr_client.run_job_flow(
                         Name=name,
@@ -105,7 +105,7 @@ def add_step(cluster_id, name, script_uri, script_args, logger):
                 'ActionOnFailure': 'CONTINUE',
                 'HadoopJarStep': {
                     'Jar': 'command-runner.jar',
-                    'Args': ['spark-submit', '--deploy-mode', 'cluster',
+                    'Args': ['spark-submit', '--deploy-mode', 'cluster', '--executor-memory', '18G', '--executor-cores' , '4',
                              script_uri, *script_args]
                 }
             }])
