@@ -1,18 +1,39 @@
 import argparse
-from pyspark.sql import SparkSession
 import logging
-from nltk.corpus import stopwords
+import sparknlp
+from sparknlp.base import Finisher, DocumentAssembler
+from sparknlp.annotator import *
+from sparknlp.pretrained import PretrainedPipeline
+from pyspark.ml import Pipeline
+from pyspark.sql import SparkSession
+import pyspark.sql.functions as f
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def execute_step(description, input, output):
 
-    with SparkSession.builder.appName(description).getOrCreate() as spark:
+    with SparkSession.builder.appName(description)\
+        .config("spark.jars.packages", "com.johnsnowlabs.nlp:spark-nlp-spark23_2.12:3.0.3")\
+        .getOrCreate() as spark:
         
         df = spark.read.parquet(input)
-        query.df.filter
+        query = df.select("product_title").distinct()
 
+        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')        
+
+        tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
+
+        normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
+
+        lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
+
+        stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
+
+        finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
+
+                
                 
         query.write.mode('overwrite').json(output)
 
