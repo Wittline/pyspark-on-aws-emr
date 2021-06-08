@@ -1,7 +1,7 @@
 import argparse
 from pyspark.sql import SparkSession
-from pyspark.sql import functions as func
 import logging
+from nltk.corpus import stopwords
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
