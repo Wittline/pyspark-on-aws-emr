@@ -11,8 +11,6 @@ def run_job_flow(
 
 
 
-    try:
-
         InstanceFleets = []
         Ec2SubnetIds= []
         KeepJobFlowAliveWhenNoSteps =  True
@@ -28,48 +26,47 @@ def run_job_flow(
                 InstanceFleets.extend(fleets['InstanceFleets'])
                 Ec2SubnetIds.extend(fleets['Ec2SubnetIds'])
                 KeepJobFlowAliveWhenNoSteps = fleets['KeepJobFlowAliveWhenNoSteps']
+                try:
+                    emr_client = boto3.client('emr')
+                    response = emr_client.run_job_flow(
+                        Name=name,
+                        LogUri=log_uri,
+                        ReleaseLabel='emr-6.3.0',
+                        Instances={
+                            'InstanceFleets': InstanceFleets,
+                            'Ec2SubnetIds' : Ec2SubnetIds,
+                            'KeepJobFlowAliveWhenNoSteps': KeepJobFlowAliveWhenNoSteps,
+                            'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
+                            'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
+                        },
+                        Steps=[{
+                            'Name': step['name'],
+                            'ActionOnFailure': 'CONTINUE',
+                            'HadoopJarStep': {
+                                'Jar': 'command-runner.jar',
+                                'Args': ['spark-submit', '--deploy-mode', 'cluster',
+                                        step['script_uri'], *step['script_args']]
+                            }
+                        } for step in steps],
+                        Applications=[{
+                            'Name': app
+                        } for app in applications],
+                        JobFlowRole=job_flow_role.name,
+                        ServiceRole=service_role.name,
+                        EbsRootVolumeSize=10,
+                        VisibleToAllUsers=True
+                    )
+                    cluster_id = response['JobFlowId']
+                    logger.info("Created cluster %s.", cluster_id)
+                except ClientError:
+                    logger.exception("Couldn't create cluster.")
+                    raise
+                else:
+                    return cluster_id
             else:
                 print (f"The fleets for the cluster must be in .json format")            
         else:
-            print (f"The file {cfile} does not exists")                
-
-
-        emr_client = boto3.client('emr')
-        response = emr_client.run_job_flow(
-            Name=name,
-            LogUri=log_uri,
-            ReleaseLabel='emr-6.3.0',
-            Instances={
-                'InstanceFleets': InstanceFleets,
-                'Ec2SubnetIds' : Ec2SubnetIds,
-                'KeepJobFlowAliveWhenNoSteps': KeepJobFlowAliveWhenNoSteps,
-                'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
-                'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
-            },
-            Steps=[{
-                'Name': step['name'],
-                'ActionOnFailure': 'CONTINUE',
-                'HadoopJarStep': {
-                    'Jar': 'command-runner.jar',
-                    'Args': ['spark-submit', '--deploy-mode', 'cluster',
-                             step['script_uri'], *step['script_args']]
-                }
-            } for step in steps],
-            Applications=[{
-                'Name': app
-            } for app in applications],
-            JobFlowRole=job_flow_role.name,
-            ServiceRole=service_role.name,
-            EbsRootVolumeSize=10,
-            VisibleToAllUsers=True
-        )
-        cluster_id = response['JobFlowId']
-        logger.info("Created cluster %s.", cluster_id)
-    except ClientError:
-        logger.exception("Couldn't create cluster.")
-        raise
-    else:
-        return cluster_id
+            print (f"The file {cfile} does not exists")
 
 
 def describe_cluster(cluster_id, logger):
