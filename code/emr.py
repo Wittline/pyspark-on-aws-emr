@@ -13,18 +13,25 @@ def run_job_flow(
 
     try:
 
-    print('-'*88)
-    print ("Reading fleet configuration...")
-    if os.path.isfile(sfile):        
-        name, ext = os.path.splitext(sfile)
-        if ext.lower() == '.json':
-            f = open(sfile,)
-            data = json.load(f)
-            print ("Preparing files for steps...")
-            for s in data['steps']:
-                print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
-                filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
+        InstanceFleets = []
+        Ec2SubnetIds= []
+        KeepJobFlowAliveWhenNoSteps =  True
 
+        print('-'*88)
+        print ("Reading fleet configuration...")
+        if os.path.isfile(cfile):        
+            name, ext = os.path.splitext(cfile)
+            if ext.lower() == '.json':
+                f = open(cfile,)
+                fleets = json.load(f)
+                print ("Preparing fleets of ec2 spot instances for cluster...")
+                InstanceFleets.extend(fleets['InstanceFleets'])
+                Ec2SubnetIds.extend(fleets['Ec2SubnetIds'])
+                KeepJobFlowAliveWhenNoSteps = fleets['KeepJobFlowAliveWhenNoSteps']
+            else:
+                print (f"The fleets for the cluster must be in .json format")            
+        else:
+            print (f"The file {cfile} does not exists")                
 
 
         emr_client = boto3.client('emr')
@@ -33,9 +40,11 @@ def run_job_flow(
             LogUri=log_uri,
             ReleaseLabel='emr-6.3.0',
             Instances={
-
-                # 'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
-                # 'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
+                'InstanceFleets': InstanceFleets,
+                'Ec2SubnetIds' : Ec2SubnetIds,
+                'KeepJobFlowAliveWhenNoSteps': KeepJobFlowAliveWhenNoSteps,
+                'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
+                'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
             },
             Steps=[{
                 'Name': step['name'],
