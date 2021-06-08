@@ -130,15 +130,15 @@ def add_steps(sfile, cluster_id):
                 
                 s['script_uri'] = f's3://{prefix_name}/{filename}'        
 
-                if s['script_args']['auto_generate_output'] == True:
+                if s['script_args']['auto_generate_output'] > 0:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
-                else:
+                else: #please validate if there is something in this field 
                    s['script_args']['output_uri'] = s['script_args']['output_uri']
                 
-                if s['script_args']['input_dependency_from_output_step'] == True:
+                if s['script_args']['input_dependency_from_output_step'] > 0:
                    s['script_args']['input_data'] = get_output_step(data, s['script_args']['from_step'])
                 else:
-                   s['script_args']['input_data'] = f's3://{prefix_name}/input/' + s['script_args']['input_data']
+                   s['script_args']['input_data'] = s['script_args']['input_data']
             
             print ("The Steps were formated...")
             s3.put_object(prefix_name,data,'steps',cluster_id, logger)

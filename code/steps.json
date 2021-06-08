@@ -11,10 +11,10 @@
             "script_uri":"/pyspark_code/pyspark_preprocessing_text.py",
             "script_args": 
             {             
-                "auto_generate_output": true, 
+                "auto_generate_output": 1, 
                 "output_uri": "",
                 "format_output": ".csv",
-                "input_dependency_from_output_step": false,
+                "input_dependency_from_output_step": 0,
                 "from_step": "",
                 "input_data": "input_data.csv"
             }
@@ -29,10 +29,10 @@
             "script_uri":"/pyspark_code/pyspark_count_word.py",
             "script_args": 
             {             
-                "auto_generate_output": true, 
+                "auto_generate_output": 1, 
                 "output_uri": "",
                 "format_output": ".csv",
-                "input_dependency_from_output_step": true,
+                "input_dependency_from_output_step": 1,
                 "from_step": "step_0",
                 "input_data": ""                    
             }
