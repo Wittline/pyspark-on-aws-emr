@@ -127,7 +127,7 @@ def add_steps(sfile, cluster_id):
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
                 filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
-
+                
                 s['script_uri'] = f's3://{prefix_name}/{filename}'        
 
                 if s['script_args']['auto_generate_output'] == True:
@@ -158,7 +158,8 @@ def execute_steps(cluster_id):
     for s in jsd['steps']:
 
         step_id = emr.add_step(
-            cluster_id, s['name'],
+            cluster_id, 
+            s['name'],
             s['script_uri'], 
             ['--auto_generate_output', s['script_args']['auto_generate_output'], 
             '--output_uri', s['script_args']['output_uri'], 
@@ -166,7 +167,10 @@ def execute_steps(cluster_id):
             '--input_dependency_from_output_step', s['script_args']['input_dependency_from_output_step'],
             '--from_step', s['script_args']['from_step'],
             '--input_data', s['script_args']['input_data'],
-             ])
+             ],
+             s['executor_memory'],
+             s['executor_cores'],
+             logger)
              
         poller.status_poller(
             "Waiting for step to complete...",

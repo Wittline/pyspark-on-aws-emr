@@ -94,7 +94,7 @@ def terminate_cluster(cluster_id, logger):
         raise
 
 
-def add_step(cluster_id, name, script_uri, script_args, logger):
+def add_step(cluster_id, name, script_uri, script_args, executor_memory, executor_cores, logger):
 
     try:
         emr_client = boto3.client('emr')
@@ -105,7 +105,7 @@ def add_step(cluster_id, name, script_uri, script_args, logger):
                 'ActionOnFailure': 'CONTINUE',
                 'HadoopJarStep': {
                     'Jar': 'command-runner.jar',
-                    'Args': ['spark-submit', '--deploy-mode', 'cluster', '--executor-memory', '18G', '--executor-cores' , '4',
+                    'Args': ['spark-submit', '--deploy-mode', 'cluster', '--executor-memory', executor_memory, '--executor-cores' , executor_cores,
                              script_uri, *script_args]
                 }
             }])
