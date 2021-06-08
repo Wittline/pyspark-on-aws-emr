@@ -1,6 +1,10 @@
 import argparse
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as func
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def execute_step(args):
     description = f'Step: {args.name} - {args.description}'
