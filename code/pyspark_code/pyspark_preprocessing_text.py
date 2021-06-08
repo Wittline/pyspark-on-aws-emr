@@ -10,11 +10,13 @@ def execute_step(args):
     description = f'Step: {args.name} - {args.description}'
     with SparkSession.builder.appName(description).getOrCreate() as spark:
         
-        
+
         df = spark.read.parquet(args.input_data)
+        query.df.filter
 
-
-        query.write.mode('overwrite').json(args.output_uri)
+        
+        output = f's3://{args.prefix_name}/output/{args.output_uri}'
+        query.write.mode('overwrite').json(output)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
