@@ -1,25 +1,41 @@
 import logging
 import boto3
+import os.path
+import json
 from botocore.exceptions import ClientError
 
 
 def run_job_flow(
-        name, log_uri, keep_alive, applications, job_flow_role, service_role,
-        security_groups, steps, logger):
+        name, log_uri, applications, job_flow_role, service_role,
+        security_groups, steps, cfile, logger):
+
+
 
     try:
+
+    print('-'*88)
+    print ("Reading fleet configuration...")
+    if os.path.isfile(sfile):        
+        name, ext = os.path.splitext(sfile)
+        if ext.lower() == '.json':
+            f = open(sfile,)
+            data = json.load(f)
+            print ("Preparing files for steps...")
+            for s in data['steps']:
+                print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
+                filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
+
+
+
         emr_client = boto3.client('emr')
         response = emr_client.run_job_flow(
             Name=name,
             LogUri=log_uri,
             ReleaseLabel='emr-6.3.0',
             Instances={
-                'MasterInstanceType': 'm5.xlarge',
-                'SlaveInstanceType': 'm5.xlarge',
-                'InstanceCount': 3,
-                'KeepJobFlowAliveWhenNoSteps': keep_alive,
-                'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
-                'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
+
+                # 'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
+                # 'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
             },
             Steps=[{
                 'Name': step['name'],

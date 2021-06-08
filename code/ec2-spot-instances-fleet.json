@@ -67,5 +67,6 @@
             }
         }
     ],
-    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ]
+    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
+    "KeepJobFlowAliveWhenNoSteps": true
 }

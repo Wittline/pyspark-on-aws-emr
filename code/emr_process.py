@@ -20,7 +20,7 @@ def create_cluster(cfile, prefix = 'default'):
         print("The cluster name cannot contain the word 'cluster'")
         return
 
-    folders = ['scripts', 'logs', 'steps', 'output', 'input']
+    folders = ['scripts', 'logs', 'steps', 'fleets' 'output', 'input']
 
     prefix = f'{prefix}-{time.time_ns()}'
 
@@ -32,7 +32,7 @@ def create_cluster(cfile, prefix = 'default'):
 
     security_groups = ec2.create_security_groups(prefix, logger)
 
-    print("Wait for 10 seconds to give roles and profiles time to propagate...")
+    print("Wait for a couple of seconds, the roles and profiles need time to propagate...")
 
     time.sleep(10)
 
@@ -41,12 +41,11 @@ def create_cluster(cfile, prefix = 'default'):
         try:
             cluster_id = emr.run_job_flow(
                 f'cluster-{prefix}',
-                f's3://{prefix}/logs',
-                True, 
-                ['Hadoop', 'Hive', 'Spark'], 
+                f's3://{prefix}/logs', 
+                ['Hadoop', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups, [], logger)
+                security_groups, [], cfile, logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:
@@ -174,7 +173,7 @@ def execute_steps(cluster_id):
             'COMPLETED',
             lambda:emr.describe_step(cluster_id, step_id)['Status']['State'])
 
-            
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
