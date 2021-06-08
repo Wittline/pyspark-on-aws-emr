@@ -9,7 +9,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 def execute_step(args):
     description = f'Step: {args.name} - {args.description}'
     with SparkSession.builder.appName(description).getOrCreate() as spark:
-
+        
+        
         df = spark.read.parquet(args.input_data)
 
 
@@ -25,5 +26,6 @@ if __name__ == '__main__':
     parser.add_argument('--input_data')
     parser.add_argument('--name')
     parser.add_argument('--description')
+    parser.add_argument('--prefix_name') 
     args = parser.parse_args()
     execute_step(args)

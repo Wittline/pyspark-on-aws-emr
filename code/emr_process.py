@@ -169,7 +169,8 @@ def execute_steps(cluster_id):
             '--from_step', s['script_args']['from_step'],
             '--input_data', s['script_args']['input_data'],
             '--name_step', s['name'],
-            '--description', s['description']            
+            '--description', s['description'],
+            '--prefix_name', s['prefix_name']                        
              ],
              s['executor_memory'],
              s['executor_cores'],
