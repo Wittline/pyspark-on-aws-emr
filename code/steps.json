@@ -8,7 +8,7 @@
             "name": "step_0",
             "guiid": 0,
             "ActionOnFailure": "CANCEL_AND_WAIT",
-            "script_uri":"C:/pyspark_code/pyspark_preprocessing_text.py",
+            "script_uri":"/pyspark_code/pyspark_preprocessing_text.py",
             "script_args": 
             {             
                 "auto_generate_output": true, 
@@ -26,7 +26,7 @@
             "name": "step_1",
             "guiid": 1,
             "ActionOnFailure": "CANCEL_AND_WAIT",
-            "script_uri":"C:/pyspark_code/pyspark_count_word.py",
+            "script_uri":"/pyspark_code/pyspark_count_word.py",
             "script_args": 
             {             
                 "auto_generate_output": true, 
