@@ -18,6 +18,7 @@ def execute_step(description, input, output):
         .config("spark.jars.packages", "com.johnsnowlabs.nlp:spark-nlp-spark23_2.12:3.0.3")\
         .getOrCreate() as spark:
         
+        
         df = spark.read.parquet(input)
         query = df.select("product_title").distinct()
 
@@ -33,9 +34,28 @@ def execute_step(description, input, output):
 
         finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
 
+        pipeline = Pipeline().setStages([
+                            documentAssembler,
+                            tokenizer,
+                            normalizer,
+                            lemmatizer,
+                            stop_words,
+                            finisher
+                            ])
+
+        new_text = pipeline.fit(query).transform(query)
+        new_text.columns
+        new_text.select('finished_clean_lemma')
+        new_text_words= new_text.withColumn('exploded_text', f.explode(f.split(f.col('finished_clean_lemma'), ' ')))\
+                                .groupBy('exploded_text')\
+                                .count()\
+                                .sort('count', ascending=False)
+        
+        counts_pd = new_text_words.toPandas()
+        counts_pd
+
                 
-                
-        query.write.mode('overwrite').json(output)
+        query.write.mode('overwrite').csv(counts_pd)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
