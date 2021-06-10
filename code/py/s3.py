@@ -49,9 +49,9 @@ def upload_to_bucket(bucket_name, f, folder, logger):
         raise
 
 
-def put_object(bucket_name, jsd, folder, filename,  cluster_id,  logger):
+def put_object(bucket_name, jsd, folder, filename,  logger):
     try:
-        Key_name= f'{folder}/{cluster_id}_{filename}.json'
+        Key_name= f'{folder}/{filename}'
         s3_resource = boto3.client('s3')
         s3_resource.put_object(Bucket= bucket_name,  
                                Body=(bytes(json.dumps(jsd).encode('UTF-8'))), 

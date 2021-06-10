@@ -14,6 +14,8 @@ def run_job_flow(
         InstanceFleets = []
         Ec2SubnetIds= []
         KeepJobFlowAliveWhenNoSteps =  True
+        bootstrap_action= []
+        Configurations = []
 
         print('-'*88)
         print ("Reading fleet configuration...")
@@ -58,6 +60,7 @@ def run_job_flow(
                         Applications=[{
                             'Name': app
                         } for app in applications],
+                        Configurations = []
                         JobFlowRole=job_flow_role.name,
                         ServiceRole=service_role.name,
                         EbsRootVolumeSize=10,
