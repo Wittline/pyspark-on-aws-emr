@@ -53,12 +53,12 @@ def run_job_flow(
                 VisibleToAllUsers=True
             )
             cluster_id = response['JobFlowId']
-            logger.info("Created cluster %s.", cluster_id)
+            print("Created cluster %s.", cluster_id)
         except ClientError:
-            logger.exception("Couldn't create cluster.")
+            print("Couldn't create cluster.")
             raise
         else:
-            return cluster_id        
+            return cluster_id
 
 
 
