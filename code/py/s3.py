@@ -63,9 +63,9 @@ def put_object(bucket_name, jsd, folder, filename,  logger):
         logger.exception("Couldn't create folder %s.", folder)
         raise    
 
-def get_data(bucket_name, folder,  filename, cluster_id, logger):
+def get_data(bucket_name, folder,  filename, logger):
     try:
-        filename = f'{folder}/{cluster_id}_{filename}.json'
+        filename = f'{folder}/{filename}'
         s3_resource = boto3.client('s3')
         s3_obj = s3_resource.get_object(Bucket=bucket_name, Key=filename)
         s3_data= s3_obj['Body'].read().decode('utf-8')

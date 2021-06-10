@@ -8,76 +8,58 @@ from botocore.exceptions import ClientError
 
 def run_job_flow(
         name, log_uri, applications, job_flow_role, service_role,
-        security_groups, steps, cfile, logger):
-
-
-        InstanceFleets = []
-        Ec2SubnetIds= []
-        KeepJobFlowAliveWhenNoSteps =  True
-        bootstrap_action= []
-        Configurations = []
+        security_groups, steps, prefix, folder, cfile, logger):
 
         print('-'*88)
-        print ("Reading fleet config file...")
-        fleet_file = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
-        if os.path.isfile(cfile):        
-            name, ext = os.path.splitext(cfile)
-            if ext.lower() == '.json':
-                f = open(cfile,)
-                fleets = json.load(f)
-                print ("Preparing fleets of ec2 spot instances for cluster...")
-                try:
-                    InstanceFleets.extend(fleets['InstanceFleets'])
-                    Ec2SubnetIds.extend(fleets['Ec2SubnetIds'])
-                    KeepJobFlowAliveWhenNoSteps = fleets['KeepJobFlowAliveWhenNoSteps']               
-                    emr_client = boto3.client('emr')
-                    response = emr_client.run_job_flow(
-                        Name=name,
-                        LogUri=log_uri,
-                        ReleaseLabel='emr-6.3.0',
-                        Instances={
-                            'InstanceFleets': InstanceFleets,
-                            'Ec2SubnetIds' : Ec2SubnetIds,
-                            'KeepJobFlowAliveWhenNoSteps': KeepJobFlowAliveWhenNoSteps,
-                            'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
-                            'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
-                        },
-                        BootstrapActions=[{
-                            'Name':'libraries',
-                            'ScriptBootstrapAction':{
-                                    'Args':[],
-                                    'Path':'path_to_bootstrapaction_on_s3'
-                                    }
-                                }],
-                        Steps=[{
-                            'Name': step['name'],
-                            'ActionOnFailure': 'CONTINUE',
-                            'HadoopJarStep': {
-                                'Jar': 'command-runner.jar',
-                                'Args': ['spark-submit', '--deploy-mode', 'cluster',
-                                        step['script_uri'], *step['script_args']]
+        try:
+            print ("Reading fleet config file...")
+            fleets = s3.get_data(prefix, folder, cfile, logger)        
+            print ("Preparing fleets of ec2 spot instances for cluster...")            
+            emr_client = boto3.client('emr')
+            response = emr_client.run_job_flow(
+                Name=name,
+                LogUri=log_uri,
+                ReleaseLabel='emr-6.3.0',
+                Instances={
+                    'InstanceFleets': fleets['InstanceFleets'],
+                    'Ec2SubnetIds' : fleets['Ec2SubnetIds'],
+                    'KeepJobFlowAliveWhenNoSteps': fleets['KeepJobFlowAliveWhenNoSteps'],
+                    'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
+                    'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
+                },
+                BootstrapActions=[{
+                    'Name':'libraries',
+                    'ScriptBootstrapAction':{
+                            'Args':[],
+                            'Path': f's3://{prefix}/bootstrap-emr/{fleets["bootstrap_action"]}',  
                             }
-                        } for step in steps],
-                        Applications=[{
-                            'Name': app
-                        } for app in applications],
-                        Configurations = []
-                        JobFlowRole=job_flow_role.name,
-                        ServiceRole=service_role.name,
-                        EbsRootVolumeSize=10,
-                        VisibleToAllUsers=True
-                    )
-                    cluster_id = response['JobFlowId']
-                    logger.info("Created cluster %s.", cluster_id)
-                except ClientError:
-                    logger.exception("Couldn't create cluster.")
-                    raise
-                else:
-                    return cluster_id
-            else:
-                print (f"The fleets for the cluster must be in .json format")            
+                        }],
+                Steps=[{
+                    'Name': step['name'],
+                    'ActionOnFailure': 'CONTINUE',
+                    'HadoopJarStep': {
+                        'Jar': 'command-runner.jar',
+                        'Args': ['spark-submit', '--deploy-mode', 'cluster',
+                                step['script_uri'], *step['script_args']]
+                    }
+                } for step in steps],
+                Applications=[{
+                    'Name': app
+                } for app in applications],
+                Configurations = fleets["Configurations"],
+                JobFlowRole=job_flow_role.name,
+                ServiceRole=service_role.name,
+                EbsRootVolumeSize=10,
+                VisibleToAllUsers=True
+            )
+            cluster_id = response['JobFlowId']
+            logger.info("Created cluster %s.", cluster_id)
+        except ClientError:
+            logger.exception("Couldn't create cluster.")
+            raise
         else:
-            print (f"The file {cfile} does not exists")
+            return cluster_id        
+
 
 
 def describe_cluster(cluster_id, logger):

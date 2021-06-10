@@ -14,7 +14,7 @@ import os.path
 logger = logging.getLogger(__name__)
 
 
-def create_cluster(cfile, prefix = 'default'):
+def create_cluster(prefix = 'default'):
 
     if prefix.find("cluster") >= 0:
         print("The cluster name cannot contain the word 'cluster'")
@@ -23,6 +23,8 @@ def create_cluster(cfile, prefix = 'default'):
     folders = ['scripts', 'logs', 'steps', 'cluster-fleets', 'bootstrap-emr', "cluster-config", 'output', 'input']
 
     prefix = f'{prefix}-{time.time_ns()}'
+    folder = 'cluster-fleets'
+    cfile = 'cluster-ec2-spot-fleet.json'
 
     bucket = s3.create_bucket(prefix, folders, logger)
 
@@ -63,7 +65,7 @@ def create_cluster(cfile, prefix = 'default'):
                 ['Hadoop', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups, [], f's3://{prefix}/cluster-fleets/cluster-ec2-spot-fleet.json', logger)
+                security_groups, [], prefix, folder, cfile, logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:
