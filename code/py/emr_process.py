@@ -28,9 +28,8 @@ def create_cluster(cfile, prefix = 'default'):
 
     dict_files_config = { 'bootstrap-emr': 'bootstrap-action.sh', 
                           'cluster-config':'config.json',
-                          'cluster-fleets':'cluster-ec2-spot-fleets.json'
+                          'cluster-fleets':'cluster-ec2-spot-fleet.json'
                         }
-
 
     print("Reading config files..")
     for k, v in dict_files_config.items():
@@ -64,7 +63,7 @@ def create_cluster(cfile, prefix = 'default'):
                 ['Hadoop', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups, [], cfile, logger)
+                security_groups, [], f's3://{prefix}/cluster-fleets/cluster-ec2-spot-fleet.json', logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:

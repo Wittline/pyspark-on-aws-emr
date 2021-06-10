@@ -2,13 +2,13 @@ import logging
 import boto3
 import os.path
 import json
+import s3
 from botocore.exceptions import ClientError
 
 
 def run_job_flow(
         name, log_uri, applications, job_flow_role, service_role,
         security_groups, steps, cfile, logger):
-
 
 
         InstanceFleets = []
@@ -18,7 +18,8 @@ def run_job_flow(
         Configurations = []
 
         print('-'*88)
-        print ("Reading fleet configuration...")
+        print ("Reading fleet config file...")
+        fleet_file = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
         if os.path.isfile(cfile):        
             name, ext = os.path.splitext(cfile)
             if ext.lower() == '.json':
