@@ -20,29 +20,32 @@ def create_cluster(prefix = 'default'):
         print("The cluster name cannot contain the word 'cluster'")
         return
 
-    folders = ['scripts', 'logs', 'steps', 'cluster-fleets', 'bootstrap-emr', "cluster-config", 'output', 'input']
+    folders = ['scripts', 'logs', 'steps', 'cluster-fleet', 'bootstrap-emr', 'output', 'input']
 
     prefix = f'{prefix}-{time.time_ns()}'
-    folder = 'cluster-fleets'
+    folder = 'cluster-fleet'
     cfile = 'cluster-ec2-spot-fleet.json'
 
     bucket = s3.create_bucket(prefix, folders, logger)
 
-    dict_files_config = { 'bootstrap-emr': 'bootstrap-action.sh', 
-                          'cluster-config':'config.json',
-                          'cluster-fleets':'cluster-ec2-spot-fleet.json'
+    dict_files_config = { 'bootstrap-emr': 'bootstrap-action.sh',
+                          'cluster-fleet': 'cluster-ec2-spot-fleet.json'
                         }
 
-    print("Reading config files..")
-    for k, v in dict_files_config.items():
-        sfile = f'json/{v}'
-        if os.path.isfile(sfile):
-            name, ext = os.path.splitext(sfile)
-            f = open(sfile,)
-            data = json.load(f)
-            print(f"Uploading {v} to folder: {k} ...")
-            s3.put_object(prefix, data, k, v, logger)
-            print(f"The '{v}' file was Uploaded")
+    try:
+        print("Reading config files..")
+        for k, v in dict_files_config.items():
+            if os.path.isfile(v):               
+                f = open(v,)
+                data = json.load(f)
+                print(f"Uploading {v} to folder: {k} ...")
+                s3.put_object(prefix, data, k, v, logger)
+                print(f"The file '{v}' was Uploaded")
+            else:
+                print("The file %s cannot be read", v)
+    except ClientError as error:
+            print("Error reading the files")
+            raise
 
     time.sleep(5)
 
