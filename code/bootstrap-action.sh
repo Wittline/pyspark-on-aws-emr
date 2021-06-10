@@ -10,3 +10,9 @@ sudo python3 -m pip install awscli boto spark-nlp
 
 set +x
 exit 0
+
+# #!/bin/bash
+# sudo pip install -U \
+#     matplotlib \
+#     pandas \
+#     spark-nlp
