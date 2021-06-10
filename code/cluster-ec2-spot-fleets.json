@@ -61,7 +61,7 @@
                 "SpotSpecification": {
                     "TimeoutDurationMinutes": 60,
                     "BlockDurationMinutes":60,
-                    "TimeoutAction": "TERMINATE_CLUSTER",
+                    "TimeoutAction": "TERMINATE_CLUSTER"
                 }
             }
         }
