@@ -26,6 +26,25 @@ def create_cluster(cfile, prefix = 'default'):
 
     bucket = s3.create_bucket(prefix, folders, logger)
 
+    dict_files_config = { 'bootstrap-emr': 'bootstrap-action.sh', 
+                          'cluster-config':'config.json',
+                          'cluster-fleets':'cluster-ec2-spot-fleets.json'
+                        }
+
+
+    print("Reading config files..")
+    for k, v in dict_files_config.items():
+        sfile = f'json/{v}'
+        if os.path.isfile(sfile):
+            name, ext = os.path.splitext(sfile)
+            f = open(sfile,)
+            data = json.load(f)
+            print(f"Uploading {v} to folder: {k} ...")
+            s3.put_object(prefix, data, k, v, logger)
+            print(f"The '{v}' file was Uploaded")
+
+    time.sleep(5)
+
     job_flow_role, service_role = iam.create_roles(
         f'{prefix}-ec2-role', 
         f'{prefix}-service-role', logger)
@@ -128,8 +147,7 @@ def add_steps(sfile, cluster_id):
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
                 filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
                 
-                s['script_uri'] = f's3://{prefix_name}/{filename}'        
-
+                s['script_uri'] = f's3://{prefix_name}/{filename}'                
                 if s['script_args']['auto_generate_output'] > 0:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
                 else: #please validate if there is something in this field 
@@ -140,9 +158,9 @@ def add_steps(sfile, cluster_id):
                 else:
                    s['script_args']['input_data'] = s['script_args']['input_data']
             
-            print ("The Steps were formated...")
-            s3.put_object(prefix_name,data,'steps',cluster_id, logger)
-            print ("The Steps were uploaded")
+            print ("The Steps were formated...")            
+            s3.put_object(prefix_name,data,'steps', 'steps.json' , logger)
+            print ("The Steps were uploaded to S3")
         else:
             print (f"The steps for the cluster {cluster_id} must be in .json format")            
     else:
