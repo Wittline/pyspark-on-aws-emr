@@ -35,11 +35,15 @@ def create_cluster(prefix = 'default'):
     try:
         print("Reading config files..")
         for k, v in dict_files_config.items():
-            if os.path.isfile(v):               
+            if os.path.isfile(v):
+                name, ext = os.path.splitext(v)              
                 f = open(v,)
-                data = json.load(f)
                 print(f"Uploading {v} to folder: {k} ...")
-                s3.put_object(prefix, data, k, v, logger)
+                if ext.lower() == '.json':                    
+                    data = json.load(f)
+                    s3.put_object(prefix, f, k, v, ext, logger)                    
+                else:                
+                    s3.put_object(prefix, f, k, v, ext, logger)
                 print(f"The file '{v}' was Uploaded")
             else:
                 print("The file %s cannot be read", v)
@@ -169,7 +173,7 @@ def add_steps(sfile, cluster_id):
                    s['script_args']['input_data'] = s['script_args']['input_data']
             
             print ("The Steps were formated...")            
-            s3.put_object(prefix_name,data,'steps', 'steps.json' , logger)
+            s3.put_object(prefix_name, data,'steps', 'steps.json' , ext, logger)
             print ("The Steps were uploaded to S3")
         else:
             print (f"The steps for the cluster {cluster_id} must be in .json format")            

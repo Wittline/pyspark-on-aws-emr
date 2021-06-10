@@ -49,14 +49,19 @@ def upload_to_bucket(bucket_name, f, folder, logger):
         raise
 
 
-def put_object(bucket_name, jsd, folder, filename,  logger):
+def put_object(bucket_name, data, folder, filename, format, logger):
     try:
         Key_name= f'{folder}/{filename}'
         s3_resource = boto3.client('s3')
-        s3_resource.put_object(Bucket= bucket_name,  
-                               Body=(bytes(json.dumps(jsd).encode('UTF-8'))), 
-                               Key= Key_name)
-
+        if format.lower() == '.json':
+             
+            s3_resource.put_object(Bucket= bucket_name,  
+                                Body=(bytes(json.dumps(data).encode('UTF-8'))), 
+                                Key= Key_name)
+        else:
+            s3_resource.put_object(Bucket= bucket_name,  
+                                Body=f, 
+                                Key= Key_name)
         logger.info(
             "Uploaded file %s to %s.", Key_name, f'{bucket_name}/{folder}')
     except ClientError:
