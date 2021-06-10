@@ -76,7 +76,10 @@ if __name__ == '__main__':
 
     if args.input_dependency_from_output_step > 0:
         input = f's3://{args.prefix_name}/output/{args.input_data}'
+    elif args.external_input > 1:
+        input = args.input_data
     else:
         input = f's3://{args.prefix_name}/input/{args.input_data}'
+
 
     execute_step(description, input, output)
