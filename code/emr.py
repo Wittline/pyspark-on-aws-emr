@@ -19,7 +19,7 @@ def run_job_flow(
             response = emr_client.run_job_flow(
                 Name=name,
                 LogUri=log_uri,
-                ReleaseLabel='emr-6.3.0',
+                ReleaseLabel='emr-6.2.0',
                 Instances={
                     'InstanceFleets': fleets['InstanceFleets'],
                     'Ec2SubnetIds' : fleets['Ec2SubnetIds'],
