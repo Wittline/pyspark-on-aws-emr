@@ -2,6 +2,7 @@
 "steps":
     [
         {
+            "bootstrap_action": "",
             "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the first step",
@@ -14,12 +15,14 @@
                 "auto_generate_output": 1, 
                 "output_uri": "",
                 "format_output": ".csv",
+                "external_input": 1,
                 "input_dependency_from_output_step": 0,
                 "from_step": "",
                 "input_data": "input_data.csv"
             }
         },
         {
+            "bootstrap_action": "",
             "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the second step",
@@ -29,9 +32,10 @@
             "script_uri":"/pyspark_code/pyspark_count_word.py",
             "script_args": 
             {             
-                "auto_generate_output": 1, 
+                "auto_generate_output": 1,
                 "output_uri": "",
                 "format_output": ".csv",
+                "external_input": 0,
                 "input_dependency_from_output_step": 1,
                 "from_step": "step_0",
                 "input_data": ""                    

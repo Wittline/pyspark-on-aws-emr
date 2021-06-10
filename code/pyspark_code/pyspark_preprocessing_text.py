@@ -62,6 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('--auto_generate_output', type=int)
     parser.add_argument('--output_uri')
     parser.add_argument('--format_output')
+    parser.add_argument('--external_input',type=int)    
     parser.add_argument('--input_dependency_from_output_step',type=int)
     parser.add_argument('--from_step')
     parser.add_argument('--input_data')

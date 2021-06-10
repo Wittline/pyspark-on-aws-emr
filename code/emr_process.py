@@ -20,7 +20,7 @@ def create_cluster(cfile, prefix = 'default'):
         print("The cluster name cannot contain the word 'cluster'")
         return
 
-    folders = ['scripts', 'logs', 'steps', 'fleets' 'output', 'input']
+    folders = ['scripts', 'logs', 'steps', 'fleets', 'libraries', 'output', 'input']
 
     prefix = f'{prefix}-{time.time_ns()}'
 
