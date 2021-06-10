@@ -84,9 +84,22 @@
                         "spark.kryoserializer.buffer.max": "2000M",
                         "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                         "spark.driver.maxResultSize": "0",
-                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"
+                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0",
+                        "yarn.nodemanager.resource.memory-mb" :2048
                     }
-                }
+                },            
+                    {
+                      "Classification": "mapred-site",
+                      "Properties": {
+                        "mapred.job.jvm.num.tasks": "-1"
+                      }
+                    },
+                    {
+                        "Classification": "spark",
+                        "Properties": {
+                          "maximizeResourceAllocation": "true"
+                        }
+                      }                  
                 ],
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
     "KeepJobFlowAliveWhenNoSteps": true

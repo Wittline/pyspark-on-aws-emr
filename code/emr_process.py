@@ -38,12 +38,12 @@ def create_cluster(prefix = 'default'):
             if os.path.isfile(v):
                 name, ext = os.path.splitext(v)              
                 f = open(v,)
-                print(f"Uploading {v} to folder: {k} ...")
+                print(f"Uploading {v} to folder {k} ...")
                 if ext.lower() == '.json':                    
                     data = json.load(f)
-                    s3.put_object(prefix, f, k, v, ext, logger)                    
+                    s3.put_object(prefix, data, k, v, ext, logger)                    
                 else:                
-                    s3.put_object(prefix, f, k, v, ext, logger)
+                    s3.upload_to_bucket(prefix, v, k, logger)
                 print(f"The file '{v}' was Uploaded")
             else:
                 print("The file %s cannot be read", v)
@@ -162,12 +162,12 @@ def add_steps(sfile, cluster_id):
                 filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
                 
                 s['script_uri'] = f's3://{prefix_name}/{filename}'                
-                if s['script_args']['auto_generate_output'] > 0:
-                   s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + s['guiid'] + s['script_args']['format_output']
+                if int(s['script_args']['auto_generate_output']) > 0:
+                   s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + str(s['guiid']) + s['script_args']['format_output']
                 else: #please validate if there is something in this field 
                    s['script_args']['output_uri'] = s['script_args']['output_uri']
                 
-                if s['script_args']['input_dependency_from_output_step'] > 0:
+                if int(s['script_args']['input_dependency_from_output_step']) > 0:
                    s['script_args']['input_data'] = get_output_step(data, s['script_args']['from_step'])
                 else:
                    s['script_args']['input_data'] = s['script_args']['input_data']
@@ -185,7 +185,7 @@ def execute_steps(cluster_id):
     cluster_name = emr.describe_cluster(cluster_id, logger)['Name']
     prefix_name = cluster_name.replace("cluster-", '')
 
-    jsd = s3.get_data(prefix_name, 'steps', 'steps.json', cluster_id, logger)
+    jsd = s3.get_data(prefix_name, 'steps', 'steps.json', logger)
 
     for s in jsd['steps']:
 
@@ -202,7 +202,7 @@ def execute_steps(cluster_id):
             '--input_data', s['script_args']['input_data'],
             '--name_step', s['name'],
             '--description', s['description'],
-            '--prefix_name', s['prefix_name']
+            '--prefix_name', prefix_name
              ],
              s['executor_memory'],
              s['executor_cores'],
@@ -211,7 +211,7 @@ def execute_steps(cluster_id):
         poller.status_poller(
             "Waiting for step to complete...",
             'COMPLETED',
-            lambda:emr.describe_step(cluster_id, step_id)['Status']['State'])
+            lambda:emr.describe_step(cluster_id, step_id, logger)['Status']['State'])
 
 
 if __name__ == '__main__':
@@ -228,7 +228,6 @@ if __name__ == '__main__':
                                 'add_steps',
                                 'delete_steps',
                                 'execute_steps'])
-
 
     # Create cluster
     parser.add_argument('-c','--cname', type=str, help = "Name Cluster")

@@ -88,7 +88,6 @@ def delete_roles(prefix_name, logger):
     try:
         iam_resource = boto3.resource('iam')
         job_flow_role = iam_resource.Role(f'{prefix_name}-ec2-role')
-
         for policy in job_flow_role.attached_policies.all():
             job_flow_role.detach_policy(PolicyArn=policy.arn)
         for inst_profile in job_flow_role.instance_profiles.all():

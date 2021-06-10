@@ -60,7 +60,7 @@ def put_object(bucket_name, data, folder, filename, format, logger):
                                 Key= Key_name)
         else:
             s3_resource.put_object(Bucket= bucket_name,  
-                                Body=f, 
+                                Body=data, 
                                 Key= Key_name)
         logger.info(
             "Uploaded file %s to %s.", Key_name, f'{bucket_name}/{folder}')
