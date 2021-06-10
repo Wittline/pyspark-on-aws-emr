@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 
 def run_job_flow(
         name, log_uri, applications, job_flow_role, service_role,
-        security_groups, steps, prefix, folder, cfile, logger):
+        security_groups, steps, prefix, folder, cfile, bootstrap_path, logger):
 
         print('-'*88)
         try:
@@ -31,7 +31,7 @@ def run_job_flow(
                     'Name':'libraries',
                     'ScriptBootstrapAction':{
                             'Args':[],
-                            'Path': f's3://{prefix}/bootstrap-emr/{fleets["bootstrap_action"]}',  
+                            'Path':bootstrap_path,  
                             }
                         }],
                 Steps=[{

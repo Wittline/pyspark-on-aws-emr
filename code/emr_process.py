@@ -68,7 +68,13 @@ def create_cluster(prefix = 'default'):
                 ['Hadoop', 'Spark'], 
                 job_flow_role, 
                 service_role,
-                security_groups, [], prefix, folder, cfile, logger)
+                security_groups, 
+                [], 
+                prefix, 
+                folder, 
+                cfile, 
+                f's3://{prefix}/bootstrap-emr/bootstrap-action.sh',
+                logger)
             print(f"Running job flow for cluster {cluster_id}...")
             break
         except ClientError as error:
