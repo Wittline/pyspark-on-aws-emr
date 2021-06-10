@@ -39,6 +39,13 @@ def run_job_flow(
                             'EmrManagedMasterSecurityGroup': security_groups['manager'].id,
                             'EmrManagedSlaveSecurityGroup': security_groups['worker'].id,
                         },
+                        BootstrapActions=[{
+                            'Name':'libraries',
+                            'ScriptBootstrapAction':{
+                                    'Args':[],
+                                    'Path':'path_to_bootstrapaction_on_s3'
+                                    }
+                                }],
                         Steps=[{
                             'Name': step['name'],
                             'ActionOnFailure': 'CONTINUE',

@@ -1,5 +1,4 @@
 {
-
     "InstanceFleets": [
         {
             "Name": "fleetmaster",
@@ -67,6 +66,8 @@
             }
         }
     ],
+    "bootstrap_action": "bootstrap-action.sh",
+    "config": "sparknlp-config.json",
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
     "KeepJobFlowAliveWhenNoSteps": true
 }

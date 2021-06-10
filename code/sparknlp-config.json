@@ -1,0 +1,21 @@
+[{
+    "Classification": "spark-env",
+    "Configurations": [{
+      "Classification": "export",
+      "Properties": {
+        "PYSPARK_PYTHON": "/usr/bin/python3"
+      }
+    }]
+  },
+  {
+    "Classification": "spark-defaults",
+      "Properties": {
+        "spark.yarn.stagingDir": "hdfs:///tmp",
+        "spark.yarn.preserve.staging.files": "true",
+        "spark.kryoserializer.buffer.max": "2000M",
+        "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+        "spark.driver.maxResultSize": "0",
+        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"
+      }
+  }
+  ]

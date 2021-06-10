@@ -2,7 +2,7 @@
 "steps":
     [
         {
-            "bootstrap_action": "",
+            
             "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the first step",
@@ -21,8 +21,7 @@
                 "input_data": "s3://amazon-reviews-pds/parquet/product_category=Books"
             }
         },
-        {
-            "bootstrap_action": "",
+        {            
             "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the second step",

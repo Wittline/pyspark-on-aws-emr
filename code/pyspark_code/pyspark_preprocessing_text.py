@@ -12,12 +12,17 @@ import pyspark.sql.functions as f
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def execute_step(description, input, output):
+def create_spark_session(description):
 
-    with SparkSession.builder.appName(description)\
-        .config("spark.jars.packages", "com.johnsnowlabs.nlp:spark-nlp-spark23_2.12:3.0.3")\
-        .getOrCreate() as spark:
-        
+    spark = SparkSession\
+            .builder\
+            .appName(description)\
+            .config("spark.jars.packages", "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0")\
+            .getOrCreate()
+
+    return spark
+
+def execute_step(spark, input, output):
         
         df = spark.read.parquet(input)
         query = df.select("product_title").distinct()
@@ -81,5 +86,5 @@ if __name__ == '__main__':
     else:
         input = f's3://{args.prefix_name}/input/{args.input_data}'
 
-
-    execute_step(description, input, output)
+    spark = create_spark_session(description)
+    execute_step(spark, input, output)
