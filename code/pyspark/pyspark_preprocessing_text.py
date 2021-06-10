@@ -17,17 +17,16 @@ def create_spark_session(description):
     spark = SparkSession\
             .builder\
             .appName(description)\
-            .config("spark.jars.packages", "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0")\
             .getOrCreate()
 
     return spark
 
 def execute_step(spark, input, output):
-        
+
         df = spark.read.parquet(input)
         query = df.select("product_title").distinct()
 
-        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')        
+        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
 
         tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
 
@@ -49,42 +48,38 @@ def execute_step(spark, input, output):
                             ])
 
         new_text = pipeline.fit(query).transform(query)
-        new_text.columns
-        new_text.select('finished_clean_lemma')
-        new_text_words= new_text.withColumn('exploded_text', f.explode(f.split(f.col('finished_clean_lemma'), ' ')))\
-                                .groupBy('exploded_text')\
-                                .count()\
-                                .sort('count', ascending=False)
-        
-        counts_pd = new_text_words.toPandas()
-        counts_pd
+        new_text.write.parquet(output)
 
-                
-        query.write.mode('overwrite').csv(counts_pd)
+        # new_text.select('finished_clean_lemma')
+        # new_text_words= new_text.withColumn('exploded_text', f.explode(f.split(f.col('finished_clean_lemma'), ' ')))\
+        #                         .groupBy('exploded_text')\
+        #                         .count()\
+        #                         .sort('count', ascending=False)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--auto_generate_output', type=int)
     parser.add_argument('--output_uri')
     parser.add_argument('--format_output')
-    parser.add_argument('--external_input',type=int)    
+    parser.add_argument('--external_input',type=int)
     parser.add_argument('--input_dependency_from_output_step',type=int)
     parser.add_argument('--from_step')
     parser.add_argument('--input_data')
     parser.add_argument('--name')
     parser.add_argument('--description')
-    parser.add_argument('--prefix_name') 
+    parser.add_argument('--prefix_name')
     args = parser.parse_args()
 
     description = f'Step: {args.name} - {args.description}'
-    output = f's3://{args.prefix_name}/output/{args.output_uri}'
+    output = f's3a://{args.prefix_name}/output/{args.output_uri}'
 
     if args.input_dependency_from_output_step > 0:
-        input = f's3://{args.prefix_name}/output/{args.input_data}'
+        input = f's3a://{args.prefix_name}/output/{args.input_data}'
     elif args.external_input > 1:
         input = args.input_data
     else:
-        input = f's3://{args.prefix_name}/input/{args.input_data}'
+        input = f's3a://{args.prefix_name}/input/{args.input_data}'
 
     spark = create_spark_session(description)
     execute_step(spark, input, output)

@@ -188,17 +188,17 @@ def execute_steps(cluster_id):
         step_id = emr.add_step(
             cluster_id, 
             s['name'],
-            s['script_uri'], 
+            s['script_uri'],
             [
-            '--auto_generate_output', s['script_args']['auto_generate_output'], 
-            '--output_uri', s['script_args']['output_uri'], 
-            '--format_output', s['script_args']['format_output'], 
+            '--auto_generate_output', s['script_args']['auto_generate_output'],
+            '--output_uri', s['script_args']['output_uri'],
+            '--format_output', s['script_args']['format_output'],
             '--input_dependency_from_output_step', s['script_args']['input_dependency_from_output_step'],
             '--from_step', s['script_args']['from_step'],
             '--input_data', s['script_args']['input_data'],
             '--name_step', s['name'],
             '--description', s['description'],
-            '--prefix_name', s['prefix_name']                        
+            '--prefix_name', s['prefix_name']
              ],
              s['executor_memory'],
              s['executor_cores'],
@@ -208,7 +208,6 @@ def execute_steps(cluster_id):
             "Waiting for step to complete...",
             'COMPLETED',
             lambda:emr.describe_step(cluster_id, step_id)['Status']['State'])
-
 
 
 if __name__ == '__main__':
