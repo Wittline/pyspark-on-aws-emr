@@ -242,7 +242,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.Action == 'create_cluster':
-        create_cluster(args.cfile, args.cname)
+        create_cluster(args.cname)
     elif args.Action == 'list_clusters':
         list_clusters()
     elif args.Action == 'terminate_cluster':
