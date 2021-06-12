@@ -76,8 +76,7 @@
                     }
                     }]
                 },
-                {
-                    
+                {                    
                     "Classification": "spark-defaults",
                     "Properties": {
                         "spark.yarn.stagingDir": "hdfs:///tmp",
