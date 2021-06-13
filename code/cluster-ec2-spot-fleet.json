@@ -95,11 +95,33 @@
                       }
                     },
                     {
+                        "Classification": "yarn-site",
+                        "Properties": {
+                            <property>
+                            <name>yarn.nodemanager.resource.memory-mb</name>
+                            <value>768</value>
+                          </property>
+                          <property>
+                            <name>yarn.scheduler.maximum-allocation-mb</name>
+                            <value>768</value>
+                          </property>
+                          <property>
+                            <name>yarn.scheduler.minimum-allocation-mb</name>
+                            <value>64</value>
+                          </property>
+                          <property>
+                            <name>yarn.nodemanager.vmem-check-enabled</name>
+                            <value>false</value>
+                          </property>
+                        }
+                      },
+                    {
                         "Classification": "spark",
                         "Properties": {
                           "maximizeResourceAllocation": "false"
                         }
-                      }                  
+                      }
+
                 ],
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
     "KeepJobFlowAliveWhenNoSteps": true
