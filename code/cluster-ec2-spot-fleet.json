@@ -79,7 +79,7 @@
                 {
                     "Classification": "yarn-site",
                     "Properties": {
-                        "yarn.nodemanager.resource.memory-mb":"38768M"
+                        "yarn.nodemanager.resource.memory-mb":"23040M"
                     }
                   }
                 ],

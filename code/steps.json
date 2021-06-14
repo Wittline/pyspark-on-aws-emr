@@ -4,7 +4,7 @@
         {
             
             "executor_memory": "18G",
-            "executor_cores": "4",
+            "executor_cores": "5",
             "description" : "example of the first step",
             "name": "step_0",
             "guiid": "0",
@@ -23,7 +23,7 @@
         },
         {            
             "executor_memory": "18G",
-            "executor_cores": "4",
+            "executor_cores": "5",
             "description" : "example of the second step",
             "name": "step_1",
             "guiid": "1",
