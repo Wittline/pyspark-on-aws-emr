@@ -86,7 +86,13 @@
                         "spark.driver.maxResultSize": "0",
                         "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"                        
                     }
-                }
+                },
+                {
+                    "Classification": "yarn-site",
+                    "Properties": {
+                        "yarn.nodemanager.resource.memory-mb":"36768"
+                    }
+                  }
                 ],
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
     "KeepJobFlowAliveWhenNoSteps": true

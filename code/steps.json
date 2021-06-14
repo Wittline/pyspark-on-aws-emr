@@ -3,7 +3,7 @@
     [
         {
             
-            "executor_memory": "16G",
+            "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the first step",
             "name": "step_0",
@@ -22,7 +22,7 @@
             }
         },
         {            
-            "executor_memory": "16G",
+            "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "example of the second step",
             "name": "step_1",
