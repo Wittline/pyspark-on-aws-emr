@@ -5,35 +5,24 @@
             "InstanceFleetType": "MASTER",
             "TargetOnDemandCapacity": 1,
             "InstanceTypeConfigs": [
-                {
-                    "InstanceType": "c5d.xlarge"
-                }          
+                {"WeightedCapacity":1,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m5.xlarge"}       
             ]
         },
         {
             "Name": "fleetcore",
             "InstanceFleetType": "CORE",
-            "TargetOnDemandCapacity": 0,
-            "TargetSpotCapacity": 8,
+            "TargetOnDemandCapacity": 8,
+            "TargetSpotCapacity": 0,
             "InstanceTypeConfigs": [
-                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.large"},
                 {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.xlarge"},
-                {"WeightedCapacity":8,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"},
-                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"c4.xlarge"}
-            ],
-            "LaunchSpecifications": {
-                "SpotSpecification": {
-                    "TimeoutDurationMinutes": 60,
-                    "BlockDurationMinutes":60,
-                    "TimeoutAction": "TERMINATE_CLUSTER"
-                }
-            }
+                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"}
+            ]
         },
         {
             "Name": "fleettask",
             "InstanceFleetType": "TASK",
             "TargetOnDemandCapacity":0,
-            "TargetSpotCapacity": 20,
+            "TargetSpotCapacity": 16,
             "InstanceTypeConfigs": [
 
                     {"WeightedCapacity":4,
@@ -94,7 +83,7 @@
                     }
                   }
                 ],
-    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],
+    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],  
     "KeepJobFlowAliveWhenNoSteps": true
 
 }
