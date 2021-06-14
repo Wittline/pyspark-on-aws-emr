@@ -11,7 +11,7 @@
         {
             "Name": "fleetcore",
             "InstanceFleetType": "CORE",
-            "TargetOnDemandCapacity": 8,
+            "TargetOnDemandCapacity": 4,
             "TargetSpotCapacity": 0,
             "InstanceTypeConfigs": [
                 {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.xlarge"},
@@ -22,7 +22,7 @@
             "Name": "fleettask",
             "InstanceFleetType": "TASK",
             "TargetOnDemandCapacity":0,
-            "TargetSpotCapacity": 16,
+            "TargetSpotCapacity": 8,
             "InstanceTypeConfigs": [
 
                     {"WeightedCapacity":4,
