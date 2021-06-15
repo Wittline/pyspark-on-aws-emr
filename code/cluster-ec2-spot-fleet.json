@@ -73,13 +73,22 @@
                         "spark.kryoserializer.buffer.max": "2000M",
                         "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                         "spark.driver.maxResultSize": "0",
-                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"                        
+                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0",
+                        "spark.dynamicAllocation.enabled": "true",
+                        "spark.shuffle.service.enabled": "true"
                     }
                 },
                 {
                     "Classification": "yarn-site",
                     "Properties": {
-                        "yarn.nodemanager.resource.memory-mb":"23040M"
+                        "yarn.nodemanager.resource.memory-mb":"23040M",
+                        "mapred.job.jvm.num.tasks": "-1"
+                    }
+                  },
+                  {
+                    "Classification": "spark",
+                    "Properties": {
+                      "maximizeResourceAllocation": "true"
                     }
                   }
                 ],
