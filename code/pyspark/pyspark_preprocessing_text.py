@@ -1,5 +1,4 @@
 import argparse
-import logging
 import sparknlp
 from sparknlp.base import Finisher, DocumentAssembler
 from sparknlp.annotator import *
@@ -9,23 +8,20 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
 
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-
 def create_spark_session(description):
 
-    logger.info("Reading spark object")
+    print("Reading spark object")
     spark = SparkSession\
             .builder\
             .appName(description)\
             .getOrCreate()
     
-    logger.info("Spark object ready")
+    print("Spark object ready")
     return spark
 
 def execute_step(spark, input, output):
 
-        logger.info("Executing step...")
+        print("Executing step...")
         df = spark.read.parquet(input)
         df = df.drop_duplicates()
         
@@ -46,13 +42,13 @@ def execute_step(spark, input, output):
                             finisher
                             ])
 
-        logger.info("Executing spark-nlp pipeline...")
+        print("Executing spark-nlp pipeline...")
         new_text = pipeline.fit(df).transform(df)
-        logger.info("Expanding column...")
+        print("Expanding column...")
         new_text_clean = df.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
-        logger.info("Saving output...")
+        print("Saving output...")
         new_text_clean.write.parquet(output)
-        logger.info("Step ready...")
+        print("Step ready...")
 
 
 if __name__ == '__main__':
@@ -79,8 +75,8 @@ if __name__ == '__main__':
     else:
         input = f's3a://{args.prefix_name}/input/{args.input_data}'
 
-    logger.info("Executing: %s.", description)
-    logger.info("Input: %s.", input)
-    logger.info("Output: %s.", output)
+    print("Executing: %s.", description)
+    print("Input: %s.", input)
+    print("Output: %s.", output)
     spark = create_spark_session(description)
     execute_step(spark, input, output)

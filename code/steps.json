@@ -3,8 +3,8 @@
     [
         {
             
-            "executor_memory": "15G",
-            "executor_cores": "4",
+            "executor_memory": "10G",
+            "executor_cores": "5",
             "description" : "example of the first step",
             "name": "step_0",
             "guiid": "0",
@@ -13,17 +13,17 @@
             "script_args":
             {             
                 "auto_generate_output": "1",
-                "output_uri": "",
+                "output_uri": "None",
                 "format_output": ".parquet",
                 "external_input": "1",
                 "input_dependency_from_output_step": "0",
-                "from_step": "",
+                "from_step": "None",
                 "input_data": "s3://amazon-reviews-pds/parquet/product_category=Books"
             }
         },
         {            
-            "executor_memory": "15G",
-            "executor_cores": "4",
+            "executor_memory": "10G",
+            "executor_cores": "5",
             "description" : "example of the second step",
             "name": "step_1",
             "guiid": "1",
@@ -32,12 +32,12 @@
             "script_args": 
             {             
                 "auto_generate_output": "1",
-                "output_uri": "",
+                "output_uri": "None",
                 "format_output": ".csv",
                 "external_input": "0",
                 "input_dependency_from_output_step": "1",
                 "from_step": "step_0",
-                "input_data": ""
+                "input_data": "None"
             }
         }
     ]
