@@ -3,8 +3,8 @@
     [
         {
             
-            "executor_memory": "16G",
-            "executor_cores": "5",
+            "executor_memory": "15G",
+            "executor_cores": "4",
             "description" : "example of the first step",
             "name": "step_0",
             "guiid": "0",
@@ -22,8 +22,8 @@
             }
         },
         {            
-            "executor_memory": "16G",
-            "executor_cores": "5",
+            "executor_memory": "15G",
+            "executor_cores": "4",
             "description" : "example of the second step",
             "name": "step_1",
             "guiid": "1",

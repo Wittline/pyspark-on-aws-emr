@@ -78,21 +78,19 @@
                         "spark.shuffle.service.enabled": "true"
                     }
                 },
-                {
-                    "Classification": "yarn-site",
-                    "Properties": {
-                        "yarn.nodemanager.resource.memory-mb":"23040M",
-                        "mapred.job.jvm.num.tasks": "-1"
-                    }
-                  },
                   {
                     "Classification": "spark",
                     "Properties": {
                       "maximizeResourceAllocation": "true"
                     }
+                  },
+                  {
+                    "Classification": "mapred-site",
+                    "Properties": {
+                      "mapred.job.jvm.num.tasks": "-1"
+                    }
                   }
                 ],
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],  
     "KeepJobFlowAliveWhenNoSteps": true
-
 }
