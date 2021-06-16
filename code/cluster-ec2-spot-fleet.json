@@ -56,8 +56,9 @@
         }
     ],
     "bootstrap_action": "bootstrap-action.sh",
-    "Configurations": [{
+    "Configurations": [{        
                     "Classification": "spark-env",
+                    "Properties":{},
                     "Configurations": [{
                     "Classification": "export",
                     "Properties": {
@@ -65,6 +66,7 @@
                     }
                     }]
                 },
+                
                 {                    
                     "Classification": "spark-defaults",
                     "Properties": {

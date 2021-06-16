@@ -1,54 +1,58 @@
 import argparse
-import sparknlp
-from sparknlp.base import Finisher, DocumentAssembler
-from sparknlp.annotator import *
-from sparknlp.pretrained import PretrainedPipeline
+import logging
 from pyspark.ml import Pipeline
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
 
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+
 def create_spark_session(description):
 
-    print("Reading spark object")
+    logger.info("Reading spark object")
     spark = SparkSession\
             .builder\
             .appName(description)\
             .getOrCreate()
     
-    print("Spark object ready")
+    logger.info("Spark object ready")
     return spark
 
 def execute_step(spark, input, output):
 
-        print("Executing step...")
+        # from sparknlp.base import Finisher, DocumentAssembler
+        # from sparknlp.annotator import *
+        # from sparknlp.pretrained import PretrainedPipeline
+
+        logger.info("Executing step...")
         df = spark.read.parquet(input)
         df = df.drop_duplicates()
         
-        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
-        tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
-        normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
-        lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
-        stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
-        finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
+        # documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
+        # tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
+        # normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
+        # lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
+        # stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
+        # finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
 
         
-        pipeline = Pipeline().setStages([
-                            documentAssembler,
-                            tokenizer,
-                            normalizer,
-                            lemmatizer,
-                            stop_words,
-                            finisher
-                            ])
+        # pipeline = Pipeline().setStages([
+        #                     documentAssembler,
+        #                     tokenizer,
+        #                     normalizer,
+        #                     lemmatizer,
+        #                     stop_words,
+        #                     finisher
+        #                     ])
 
-        print("Executing spark-nlp pipeline...")
-        new_text = pipeline.fit(df).transform(df)
-        print("Expanding column...")
-        new_text_clean = df.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
-        print("Saving output...")
-        new_text_clean.write.parquet(output)
-        print("Step ready...")
+        # logger.info("Executing spark-nlp pipeline...")
+        # new_text = pipeline.fit(df).transform(df)
+        # logger.info("Expanding column...")
+        # new_text_clean = df.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
+        # logger.info("Saving output...")
+        df.write.parquet(output)
+        logger.info("Step ready...")
 
 
 if __name__ == '__main__':
@@ -75,8 +79,8 @@ if __name__ == '__main__':
     else:
         input = f's3a://{args.prefix_name}/input/{args.input_data}'
 
-    print("Executing: %s.", description)
-    print("Input: %s.", input)
-    print("Output: %s.", output)
+    logger.info("Executing: %s.", description)
+    logger.info("Input: %s.", input)
+    logger.info("Output: %s.", output)
     spark = create_spark_session(description)
     execute_step(spark, input, output)
