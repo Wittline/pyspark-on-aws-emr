@@ -197,6 +197,7 @@ def execute_steps(cluster_id):
             '--auto_generate_output', s['script_args']['auto_generate_output'],
             '--output_uri', s['script_args']['output_uri'],
             '--format_output', s['script_args']['format_output'],
+            '--external_input', s['script_args']['external_input'],
             '--input_dependency_from_output_step', s['script_args']['input_dependency_from_output_step'],
             '--from_step', s['script_args']['from_step'],
             '--input_data', s['script_args']['input_data'],

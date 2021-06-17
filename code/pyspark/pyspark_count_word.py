@@ -44,17 +44,17 @@ if __name__ == '__main__':
     parser.add_argument('--input_dependency_from_output_step',type=int)
     parser.add_argument('--from_step')
     parser.add_argument('--input_data')
-    parser.add_argument('--name')
+    parser.add_argument('--name_step')
     parser.add_argument('--description')
     parser.add_argument('--prefix_name')
     args = parser.parse_args()
 
-    description = f'Step: {args.name} - {args.description}'
+    description = f'Step: {args.name_step} - {args.description}'
     output = f's3a://{args.prefix_name}/output/{args.output_uri}'
 
     if args.input_dependency_from_output_step > 0:
         input = f's3a://{args.prefix_name}/output/{args.input_data}'
-    elif args.external_input > 1:
+    elif args.external_input > 0:
         input = args.input_data
     else:
         input = f's3a://{args.prefix_name}/input/{args.input_data}'
