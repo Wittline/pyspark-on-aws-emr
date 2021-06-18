@@ -18,7 +18,7 @@
                 "external_input": "1",
                 "input_dependency_from_output_step": "0",
                 "from_step": "None",
-                "input_data": "s3://amazon-reviews-pds/parquet/"
+                "input_data": "s3://amazon-reviews-pds/parquet/product_category=Books"
             }
         },
         {            
