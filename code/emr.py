@@ -98,7 +98,7 @@ def add_step(cluster_id, name, script_uri, script_args, executor_memory, executo
                 'ActionOnFailure': 'CONTINUE',
                 'HadoopJarStep': {
                     'Jar': 'command-runner.jar',
-                    'Args': ['spark-submit', '--executor-memory', executor_memory, '--executor-cores' , executor_cores,
+                    'Args': ['spark-submit', '--deploy-mode', 'cluster', '--executor-memory', executor_memory, '--executor-cores' , executor_cores,
                              script_uri, *script_args]
                 }
             }])

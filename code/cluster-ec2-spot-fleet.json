@@ -5,17 +5,17 @@
             "InstanceFleetType": "MASTER",
             "TargetOnDemandCapacity": 1,
             "InstanceTypeConfigs": [
-                {"WeightedCapacity":1,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m5.xlarge"}       
+                {"InstanceType":"m5.xlarge"}       
             ]
         },
         {
             "Name": "fleetcore",
             "InstanceFleetType": "CORE",
-            "TargetOnDemandCapacity": 4,
+            "TargetOnDemandCapacity": 8,
             "TargetSpotCapacity": 0,
             "InstanceTypeConfigs": [
-                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.xlarge"},
-                {"WeightedCapacity":4,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"}
+                {"WeightedCapacity":8,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m5.2xlarge"},
+                {"WeightedCapacity":8, "BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"}
             ]
         },
         {
@@ -25,25 +25,25 @@
             "TargetSpotCapacity": 8,
             "InstanceTypeConfigs": [
 
-                    {"WeightedCapacity":4,
+                    {"WeightedCapacity":8,
                      "BidPriceAsPercentageOfOnDemandPrice":100,
-                     "InstanceType":"r5a.xlarge"
+                     "InstanceType":"m5.2xlarge"
                     },
-                    {"WeightedCapacity":4,
+                    {"WeightedCapacity":8,
                      "BidPriceAsPercentageOfOnDemandPrice":100,
-                     "InstanceType":"r5d.xlarge"
+                     "InstanceType":"m4.2xlarge"
                     },
-                    {"WeightedCapacity":4,
+                    {"WeightedCapacity":8,
                      "BidPriceAsPercentageOfOnDemandPrice":100,
-                     "InstanceType":"r4.xlarge"
+                     "InstanceType":"m5a.2xlarge"
                     },
-                    {"WeightedCapacity":4,
+                    {"WeightedCapacity":8,
                      "BidPriceAsPercentageOfOnDemandPrice":100,
-                     "InstanceType":"m5.xlarge"
+                     "InstanceType":"m6g.2xlarge"
                     },
-                    {"WeightedCapacity":4,
+                    {"WeightedCapacity":8,
                      "BidPriceAsPercentageOfOnDemandPrice":100,
-                     "InstanceType":"r5.xlarge"
+                     "InstanceType":"r5.2xlarge"
                     }
             ],
             "LaunchSpecifications": {
@@ -75,15 +75,13 @@
                         "spark.kryoserializer.buffer.max": "2000M",
                         "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                         "spark.driver.maxResultSize": "0",
-                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0",
-                        "spark.dynamicAllocation.enabled": "true",
-                        "spark.shuffle.service.enabled": "true"
+                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"
                     }
                 },
                   {
                     "Classification": "spark",
                     "Properties": {
-                      "maximizeResourceAllocation": "true"
+                      "maximizeResourceAllocation": "false"
                     }
                   },
                   {
@@ -91,7 +89,13 @@
                     "Properties": {
                       "mapred.job.jvm.num.tasks": "-1"
                     }
-                  }
+                  },
+                  {
+                    "Classification": "yarn-site",
+                       "Properties": {
+                           "yarn.nodemanager.resource.memory-mb":"22888"
+                       }
+                     }                  
                 ],
     "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],  
     "KeepJobFlowAliveWhenNoSteps": true
