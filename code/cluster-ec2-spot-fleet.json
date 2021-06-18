@@ -22,7 +22,7 @@
             "Name": "fleettask",
             "InstanceFleetType": "TASK",
             "TargetOnDemandCapacity":0,
-            "TargetSpotCapacity": 16,
+            "TargetSpotCapacity": 32,
             "InstanceTypeConfigs": [
 
                     {"WeightedCapacity":8,
