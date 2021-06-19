@@ -27,8 +27,7 @@ def execute_step(spark, input, output):
 
 
         logger.info("Executing step...")
-        df = spark.read.parquet(input)
-        df = df.drop_duplicates()
+        df = spark.read.parquet(input).drop_duplicates()
         
         documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
         tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
