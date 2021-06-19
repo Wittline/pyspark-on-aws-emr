@@ -26,14 +26,15 @@ def execute_step(spark, input, output):
 
         logger.info("Count words...")
 
+        cols = ['year','count']
         counts = df.groupby('exploded_text', 'year')\
                          .count()\
-                         .sort('count', ascending=False)
+                         .sort(f.col("year").asc, f.col("count").desc)
 
-        logger.info("Saving output...")        
-        counts.write.csv(path=output, header=True, sep=',')
+        logger.info("Saving output...")
+        counts.write.partitionBy("year").mode("overwrite").parquet(output)
         logger.info("Step ready...")
-        
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
