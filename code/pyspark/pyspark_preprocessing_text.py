@@ -3,6 +3,9 @@ import logging
 from pyspark.ml import Pipeline
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
+from sparknlp.base import Finisher, DocumentAssembler
+from sparknlp.annotator import *
+from sparknlp.pretrained import PretrainedPipeline
 
 
 logger = logging.getLogger(__name__)
@@ -21,39 +24,49 @@ def create_spark_session(description):
 
 def execute_step(spark, input, output):
 
-        # from sparknlp.base import Finisher, DocumentAssembler
-        # from sparknlp.annotator import *
-        # from sparknlp.pretrained import PretrainedPipeline
+
 
         logger.info("Executing step...")
         df = spark.read.parquet(input)
         df = df.drop_duplicates()
         
-        # documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
-        # tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
-        # normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
-        # lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
-        # stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
-        # finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
+        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
+        tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
+        normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
+        lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
+        stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
+        finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
 
         
-        # pipeline = Pipeline().setStages([
-        #                     documentAssembler,
-        #                     tokenizer,
-        #                     normalizer,
-        #                     lemmatizer,
-        #                     stop_words,
-        #                     finisher
-        #                     ])
+        pipeline = Pipeline().setStages([
+                            documentAssembler,
+                            tokenizer,
+                            normalizer,
+                            lemmatizer,
+                            stop_words,
+                            finisher
+                            ])
 
-        # logger.info("Executing spark-nlp pipeline...")
-        # new_text = pipeline.fit(df).transform(df)
-        # logger.info("Expanding column...")
-        # new_text_clean = df.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
-        # logger.info("Saving output...")
-        df.write.parquet(output)
+        logger.info("Executing spark-nlp pipeline...")
+        new_text = pipeline.fit(df).transform(df)
+        logger.info("Expanding column...")
+        new_text_clean = new_text.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
+        new_text_clean_columns = new_text_clean.select('product_id', 
+                                                      'product_title',
+                                                      'star_rating',
+                                                      'helpful_votes',
+                                                      'total_votes',
+                                                      'review_date',
+                                                      'year',
+                                                      'document',
+                                                      'token',
+                                                      'normalized',
+                                                      'lemma',
+                                                      'finished_clean_lemma',
+                                                      'exploded_text')
+        logger.info("Saving output...")
+        new_text_clean_columns.write.parquet(output)
         logger.info("Step ready...")
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
