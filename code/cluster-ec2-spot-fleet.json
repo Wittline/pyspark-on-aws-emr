@@ -75,7 +75,7 @@
                         "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                         "spark.driver.maxResultSize": "0",
                         "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0",
-                        "spark.yarn.jars": "hdfs:///usr/lib/spark/jars/*"
+                        "spark.yarn.jars": "/usr/lib/spark/jars/*"
                     }
                 },
                   {
