@@ -3,9 +3,12 @@ import logging
 from pyspark.ml import Pipeline
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as f
-from sparknlp.base import Finisher, DocumentAssembler
-from sparknlp.annotator import *
-from sparknlp.pretrained import PretrainedPipeline
+
+from os import path
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import os
 
 
 logger = logging.getLogger(__name__)
@@ -24,40 +27,16 @@ def create_spark_session(description):
 
 def execute_step(spark, input, output):
 
-
-
         logger.info("Executing step...")
-        df = spark.read.parquet(input).drop_duplicates()
+        df = spark.read.parquet(input)
 
-        df_group = df.groupBy('product_title', 'year').count()
+        logger.info("Grouping words...")
         
-        documentAssembler = DocumentAssembler().setInputCol('product_title').setOutputCol('document')
-        tokenizer = Tokenizer().setInputCols(['document']).setOutputCol('token')
-        normalizer = Normalizer().setInputCols(['token']).setOutputCol('normalized').setLowercase(True)
-        lemmatizer = LemmatizerModel.pretrained().setInputCols(['normalized']).setOutputCol('lemma')
-        stop_words = StopWordsCleaner.pretrained('stopwords_en', 'en').setInputCols(["lemma"]).setOutputCol("clean_lemma").setCaseSensitive(False)
-        finisher = Finisher().setInputCols(['clean_lemma']).setCleanAnnotations(False)
-
-        
-        pipeline = Pipeline().setStages([
-                            documentAssembler,
-                            tokenizer,
-                            normalizer,
-                            lemmatizer,
-                            stop_words,
-                            finisher
-                            ])
-
-        logger.info("Executing spark-nlp pipeline...")
-        new_text = pipeline.fit(df_group).transform(df_group)
-        logger.info("Expanding column...")
-        new_text_clean = new_text.withColumn("exploded_text", f.explode(f.col("finished_clean_lemma")))
-        new_text_clean_columns = new_text_clean.select('product_title',
-                                                      'year',
-                                                      'exploded_text')                                                    
+        counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text"))
         logger.info("Saving output...")
-        new_text_clean_columns.write.parquet(output)
+        counts_by_year.write.partitionBy("year").mode("overwrite").parquet(output)
         logger.info("Step ready...")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

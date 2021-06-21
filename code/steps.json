@@ -5,7 +5,7 @@
             
             "executor_memory": "18G",
             "executor_cores": "4",
-            "description" : "example of the first step",
+            "description" : "Reading from dataset data and filtering",
             "name": "step_0",
             "guiid": "0",
             "ActionOnFailure": "CANCEL_AND_WAIT",
@@ -24,7 +24,7 @@
         {            
             "executor_memory": "18G",
             "executor_cores": "4",
-            "description" : "example of the second step",
+            "description" : "Gnerating final dataset",
             "name": "step_1",
             "guiid": "1",
             "ActionOnFailure": "CANCEL_AND_WAIT",
@@ -37,6 +37,26 @@
                 "external_input": "0",
                 "input_dependency_from_output_step": "1",
                 "from_step": "step_0",
+                "input_data": "None"
+            }
+        },
+
+        {            
+            "executor_memory": "18G",
+            "executor_cores": "4",
+            "description" : "generating clouds",
+            "name": "step_2",
+            "guiid": "2",
+            "ActionOnFailure": "CANCEL_AND_WAIT",
+            "script_uri":"pyspark/generate_clouds.py",
+            "script_args": 
+            {             
+                "auto_generate_output": "1",
+                "output_uri": "None",
+                "format_output": ".png",
+                "external_input": "0",
+                "input_dependency_from_output_step": "1",
+                "from_step": "step_1",
                 "input_data": "None"
             }
         }
