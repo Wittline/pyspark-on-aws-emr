@@ -30,7 +30,10 @@ def execute_step(spark, input, output):
         logger.info("Executing step...")
         df = spark.read.parquet(input)
 
-        
+        wtc = df.where("year == 1995").show()
+
+
+
         counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text"))
         logger.info("Saving output...")
         counts_by_year.write.partitionBy("year").mode("overwrite").parquet(output)
