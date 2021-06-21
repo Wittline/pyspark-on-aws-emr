@@ -44,11 +44,16 @@ def execute_step(spark, input, output, args):
         df = spark.read.parquet(input)
         s3 = boto3.client('s3')
         us_mask = np.array(from_s3(s3, args.prefix_name,f'input/usa.png'))
+        stopwords = set(STOPWORDS)
+        stopwords.add("book")
+        stopwords.add("edition")
+        stopwords.add("serie")
+        
+
         years = list(range(1995, 2016))
 
         for y in years:
-            text = df.where("year == " + str(y)).first()['words']            
-            stopwords = set(STOPWORDS)
+            text = df.where("year == " + str(y)).first()['words']
             wc = WordCloud(background_color="white", max_words=20000, mask=us_mask, stopwords=stopwords)
             wc.generate(text)
             path_file = path.join('tmp',f'word_cloud_{y}_us.png')
