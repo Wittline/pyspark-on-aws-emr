@@ -29,7 +29,7 @@ def execute_step(spark, input, output):
         group_by_year = df.groupby('year').agg(f.collect_list("exploded_text").alias('words'))
         concat_text = group_by_year.withColumn("words", f.concat_ws(" ", "words"))
         logger.info("Saving output...")
-        concat_text.write.partitionBy("year").mode("overwrite").parquet(output)
+        concat_text.write.parquet(output)
         logger.info("Step ready...")
 
 

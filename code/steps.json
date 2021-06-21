@@ -33,7 +33,7 @@
             {             
                 "auto_generate_output": "1",
                 "output_uri": "None",
-                "format_output": ".csv",
+                "format_output": ".parquet",
                 "external_input": "0",
                 "input_dependency_from_output_step": "1",
                 "from_step": "step_0",
