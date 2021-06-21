@@ -40,7 +40,6 @@
                 "input_data": "None"
             }
         },
-
         {            
             "executor_memory": "18G",
             "executor_cores": "4",

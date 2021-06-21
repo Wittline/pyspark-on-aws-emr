@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import os
 import boto3
 from io import BytesIO
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS
 
 
 logger = logging.getLogger(__name__)
@@ -34,14 +34,13 @@ def from_s3(bucket, key):
         return Image.open(BytesIO(file_byte_string))
 
 
-def to_s3(self, img, bucket, key):
-        buffer = BytesIO()
-        img.save(buffer, self.__get_safe_ext(key))
-        buffer.seek(0)
-        sent_data = self.s3.put_object(Bucket=bucket, Key=key, Body=buffer)      
+def to_s3(filename, bucket, key):    
+        s3 = boto3.client('s3')
+        object_name = key + "/{fname}".format(fname= os.path.basename(filename))
+        sent_data = s3.upload_file(filename, bucket, object_name)
 
 
-def execute_step(spark, input, output):
+def execute_step(spark, input, output, args):
 
         logger.info("Executing step...")
         df = spark.read.parquet(input)
@@ -49,16 +48,15 @@ def execute_step(spark, input, output):
         years = list(range(1995, 2016))
         for y in years:
             text = df.where("year == " + str(y)).first()['words']
-
-
-
-
-
-
-
-        counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text"))
-        logger.info("Saving output...")
-        counts_by_year.write.partitionBy("year").mode("overwrite").parquet(output)
+            us_mask = np.array(from_s3(args.prefix_name,f'input/usa.png'))
+            stopwords = set(STOPWORDS)
+            #stopwords.add("book")
+            wc = WordCloud(background_color="white", max_words=20000, mask=us_mask, stopwords=stopwords)
+            wc.generate(text)
+            path_file = path.join('tmp',f'word_cloud_{y}_us.png')
+            wc.to_file(path_file)
+            to_s3(path_file, args.prefix_name, 'output')
+            
         logger.info("Step ready...")
 
 
@@ -90,4 +88,4 @@ if __name__ == '__main__':
     logger.info("Input: %s.", input)
     logger.info("Output: %s.", output)
     spark = create_spark_session(description)
-    execute_step(spark, input, output)
+    execute_step(spark, input, output, args)
