@@ -49,6 +49,9 @@ def execute_step(spark, input, output, args):
         stopwords.add("edition")
         stopwords.add("serie")
         stopwords.add("series")
+        stopwords.add("volume")
+        stopwords.add("vol")
+        stopwords.add("guide")
         
         dc = df.collect()
         for row in dc:
