@@ -8,7 +8,8 @@ from sparknlp.annotator import *
 from sparknlp.pretrained import PretrainedPipeline
 
 
-logger = logging.getLogger('py4j')
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def create_spark_session(description):
 

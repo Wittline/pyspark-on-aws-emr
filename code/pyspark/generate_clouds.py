@@ -28,14 +28,12 @@ def create_spark_session(description):
     logger.info("Spark object ready")
     return spark
 
-def from_s3(bucket, key):
-        s3 = boto3.client('s3')
+def from_s3(s3, bucket, key):        
         file_byte_string = s3.get_object(Bucket=bucket, Key=key)['Body'].read()
         return Image.open(BytesIO(file_byte_string))
 
 
-def to_s3(filename, bucket, key):    
-        s3 = boto3.client('s3')
+def to_s3(s3, filename, bucket, key):            
         object_name = key + "/{fname}".format(fname= os.path.basename(filename))
         sent_data = s3.upload_file(filename, bucket, object_name)
 
@@ -44,13 +42,13 @@ def execute_step(spark, input, output, args):
 
         logger.info("Executing step...")
         df = spark.read.parquet(input)
-
+        us_mask = np.array(from_s3(args.prefix_name,f'input/usa.png'))
+        s3 = boto3.client('s3')
         years = list(range(1995, 2016))
+
         for y in years:
-            text = df.where("year == " + str(y)).first()['words']
-            us_mask = np.array(from_s3(args.prefix_name,f'input/usa.png'))
+            text = df.where("year == " + str(y)).first()['words']            
             stopwords = set(STOPWORDS)
-            #stopwords.add("book")
             wc = WordCloud(background_color="white", max_words=20000, mask=us_mask, stopwords=stopwords)
             wc.generate(text)
             path_file = path.join('tmp',f'word_cloud_{y}_us.png')

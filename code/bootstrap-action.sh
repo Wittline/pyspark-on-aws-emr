@@ -6,7 +6,7 @@ export HADOOP_CONF_DIR=/etc/hadoop/conf
 export SPARK_JARS_DIR=/usr/lib/spark/jars 
 export SPARK_HOME=/usr/lib/spark' >> $HOME/.bashrc && source $HOME/.bashrc
 
-sudo python3 -m pip install awscli boto spark-nlp wordcloud image
+sudo python3 -m pip install awscli boto3 spark-nlp wordcloud image
 
 set +x
 exit 0
