@@ -49,7 +49,7 @@ Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube do
 
 ``` 
 ramse@DESKTOP-K6K6E5A MINGW64 /c
-$ git clone https://github.com/Wittline/PySpark-on-AWS-EMR.git
+$ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
 
 ```
 
