@@ -30,7 +30,6 @@ def execute_step(spark, input, output):
         logger.info("Executing step...")
         df = spark.read.parquet(input)
 
-        logger.info("Grouping words...")
         
         counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text"))
         logger.info("Saving output...")

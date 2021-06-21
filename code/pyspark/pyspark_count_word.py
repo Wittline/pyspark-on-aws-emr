@@ -26,7 +26,7 @@ def execute_step(spark, input, output):
 
         logger.info("Grouping words...")
         
-        counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text"))
+        counts_by_year = df.groupby('year').agg(f.collect_list("exploded_text").alias('words'))
         logger.info("Saving output...")
         counts_by_year.write.partitionBy("year").mode("overwrite").parquet(output)
         logger.info("Step ready...")
