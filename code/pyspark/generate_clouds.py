@@ -42,8 +42,8 @@ def execute_step(spark, input, output, args):
 
         logger.info("Executing step...")
         df = spark.read.parquet(input)
-        us_mask = np.array(from_s3(args.prefix_name,f'input/usa.png'))
         s3 = boto3.client('s3')
+        us_mask = np.array(from_s3(s3, args.prefix_name,f'input/usa.png'))
         years = list(range(1995, 2016))
 
         for y in years:
@@ -53,7 +53,7 @@ def execute_step(spark, input, output, args):
             wc.generate(text)
             path_file = path.join('tmp',f'word_cloud_{y}_us.png')
             wc.to_file(path_file)
-            to_s3(path_file, args.prefix_name, 'output')
+            to_s3(s3, path_file, args.prefix_name, 'output')
             
         logger.info("Step ready...")
 
