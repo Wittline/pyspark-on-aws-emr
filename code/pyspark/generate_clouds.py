@@ -9,6 +9,9 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import boto3
+from io import BytesIO
+from wordcloud import WordCloud
 
 
 logger = logging.getLogger(__name__)
@@ -25,12 +28,31 @@ def create_spark_session(description):
     logger.info("Spark object ready")
     return spark
 
+def from_s3(bucket, key):
+        s3 = boto3.client('s3')
+        file_byte_string = s3.get_object(Bucket=bucket, Key=key)['Body'].read()
+        return Image.open(BytesIO(file_byte_string))
+
+
+def to_s3(self, img, bucket, key):
+        buffer = BytesIO()
+        img.save(buffer, self.__get_safe_ext(key))
+        buffer.seek(0)
+        sent_data = self.s3.put_object(Bucket=bucket, Key=key, Body=buffer)      
+
+
 def execute_step(spark, input, output):
 
         logger.info("Executing step...")
         df = spark.read.parquet(input)
 
-        wtc = df.where("year == 1995").show()
+        years = list(range(1995, 2016))
+        for y in years:
+            text = df.where("year == " + str(y)).first()['words']
+
+
+
+
 
 
 
