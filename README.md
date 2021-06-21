@@ -39,15 +39,8 @@ Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron
 - pyspark_grouping_words.py
 - generate_clouds.py
 
+# Running an example
 
-
-
-
-Python Code Samples for Amazon EMR
-
-
-
-# Pyspark Code
 
 
 
