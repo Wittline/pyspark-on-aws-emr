@@ -39,7 +39,20 @@ Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron
 - pyspark_grouping_words.py
 - generate_clouds.py
 
-# Running an example
+# Running the example
+
+Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube donde te explica como correr el ejemplo paso a paso.
+
+## Steps to follow:
+
+- Install <a href="https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/">git-bash for windows</a>, once installed , open **git bash** and download this repository, this will download all the files needed.
+
+``` 
+ramse@DESKTOP-K6K6E5A MINGW64 /c
+$ git clone https://github.com/Wittline/PySpark-on-AWS-EMR.git
+
+```
+
 
 
 
