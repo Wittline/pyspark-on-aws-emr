@@ -45,6 +45,8 @@ Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube do
 
 ## Steps to follow:
 
+- Create a new User in AWS with *AdministratorAccess** and get your security credentials
+- Go to this url: <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html ">AWS CLI </a> and configure your AWS Credentials in your local machine
 - Install <a href="https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/">git-bash for windows</a>, once installed , open **git bash** and download this repository, this will download all the files needed.
 
 ``` 
@@ -52,9 +54,21 @@ ramse@DESKTOP-K6K6E5A MINGW64 /c
 $ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
 ```
 
+```
+ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
+python emr_process.py -a create_cluster -c Project1
+```
 
 
+```
+ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
+python emr_process.py -a add_steps -steps steps.json -idc j-32XU1B7LJSSRO
+``
 
+```
+ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
+python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
+``
 
 
 
