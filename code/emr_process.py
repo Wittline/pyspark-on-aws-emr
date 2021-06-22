@@ -164,7 +164,7 @@ def add_steps(sfile, cluster_id):
                 s['script_uri'] = f's3://{prefix_name}/{filename}'                
                 if int(s['script_args']['auto_generate_output']) > 0:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + str(s['guiid']) + s['script_args']['format_output']
-                else: #please validate if there is something in this field 
+                else: #please validate if there is something else in this field 
                    s['script_args']['output_uri'] = s['script_args']['output_uri']
                 
                 if int(s['script_args']['input_dependency_from_output_step']) > 0:

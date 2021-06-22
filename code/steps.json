@@ -18,7 +18,8 @@
                 "external_input": "1",
                 "input_dependency_from_output_step": "0",
                 "from_step": "None",
-                "input_data": "s3://amazon-reviews-pds/parquet/product_category=Books"
+                "input_data": "s3://amazon-reviews-pds/parquet/product_category=Books",
+                "local_input": ""
             }
         },
         {            
@@ -37,7 +38,8 @@
                 "external_input": "0",
                 "input_dependency_from_output_step": "1",
                 "from_step": "step_0",
-                "input_data": "None"
+                "input_data": "None",
+                "local_input": ""
             }
         },
         {            
@@ -56,7 +58,8 @@
                 "external_input": "0",
                 "input_dependency_from_output_step": "1",
                 "from_step": "step_1",
-                "input_data": "None"
+                "input_data": "None",
+                "local_input": "data/usa.png"
             }
         }
     ]
