@@ -157,11 +157,16 @@ def add_steps(sfile, cluster_id):
             f = open(sfile,)
             data = json.load(f)
             print ("Preparing files for steps...")
+
             for s in data['steps']:
                 print (f"Processing step with name {s['name']} and guiid {s['guiid']}...")
-                filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)
-                
-                s['script_uri'] = f's3://{prefix_name}/{filename}'                
+                filename= s3.upload_to_bucket(prefix_name,s['script_uri'],'scripts',logger)            
+                s['script_uri'] = f's3://{prefix_name}/{filename}'
+
+                if s['script_args']['local_input'] != '':
+                    filename= s3.upload_to_bucket(prefix_name,s['script_args']['local_input'],'input',logger)   
+
+
                 if int(s['script_args']['auto_generate_output']) > 0:
                    s['script_args']['output_uri'] = 'output_' + s['name'] + '_' + str(s['guiid']) + s['script_args']['format_output']
                 else: #please validate if there is something else in this field 
@@ -212,7 +217,7 @@ def execute_steps(cluster_id):
         poller.status_poller(
             "Waiting for step to complete...",
             'COMPLETED',
-            lambda:emr.describe_step(cluster_id, step_id, logger)['Status']['State'])
+            lambda:emr.describe_step(cluster_id, step_id, logger)['Status']['State'], logger)
 
 
 if __name__ == '__main__':

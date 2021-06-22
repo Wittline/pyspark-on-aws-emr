@@ -41,7 +41,7 @@ def upload_to_bucket(bucket_name, f, folder, logger):
         object_name = folder + "/{fname}".format(fname= os.path.basename(f)) 
         s3_resource.upload_file(f, bucket_name, object_name , ExtraArgs = None)
         logger.info(
-            "Uploaded script %s to %s.", object_name,
+            "Uploaded file %s to %s.", object_name,
             f'{bucket_name}')
         return object_name
     except ClientError:

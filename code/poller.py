@@ -1,11 +1,10 @@
 import logging
 import sys
 import time
-import boto3
 
-def status_poller(intro, done_status, func):
+def status_poller(intro, done_status, func, logger):
 
-    emr_client = boto3.client('emr')    
+    logger.setLevel(logging.WARNING)
     status = None
     print(intro)
     print("Current status: ", end='')
@@ -16,6 +15,9 @@ def status_poller(intro, done_status, func):
             print('.', end='')
         else:
             print(status, end='')
+            sys.stdout.flush()
+            break            
         sys.stdout.flush()
         time.sleep(10)
     print()
+    logger.setLevel(logging.INFO)
