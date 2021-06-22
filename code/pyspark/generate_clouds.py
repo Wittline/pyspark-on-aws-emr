@@ -63,16 +63,6 @@ def execute_step(spark, input, output, args):
             wc.to_file(path_file)
             to_s3(s3, path_file, args.prefix_name, 'output')        
 
-        # years = list(range(1995, 2016))
-
-        # for y in years:
-        #     text = df.where("year == " + str(y)).first()['words']
-        #     wc = WordCloud(background_color="white", max_words=20000, mask=us_mask, stopwords=stopwords)
-        #     wc.generate(text)
-        #     path_file = path.join('tmp',f'word_cloud_{y}_us.png')
-        #     wc.to_file(path_file)
-        #     to_s3(s3, path_file, args.prefix_name, 'output')
-            
         logger.info("Step ready...")
 
 
