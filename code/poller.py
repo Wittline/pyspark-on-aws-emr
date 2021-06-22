@@ -15,8 +15,6 @@ def status_poller(intro, done_status, func, logger):
             print('.', end='')
         else:
             print(status, end='')
-            sys.stdout.flush()
-            break            
         sys.stdout.flush()
         time.sleep(30)
     print()

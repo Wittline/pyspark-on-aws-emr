@@ -237,7 +237,6 @@ if __name__ == '__main__':
 
     # Create cluster
     parser.add_argument('-c','--cname', type=str, help = "Name Cluster")
-    parser.add_argument('-cfg','--cfile', type=str, help = "File with the fonfiguration of the emr cluster")
 
     # Terminate cluster
     parser.add_argument('-idc','--cluster_id', type=str, help = "Id of the cluster")
@@ -251,14 +250,27 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.Action == 'create_cluster':
-        create_cluster(args.cname)
+        if args.cname is not None and args.cname!= '':
+            create_cluster(args.cname)
+        else:
+            print("The argument -c is missing")
     elif args.Action == 'list_clusters':
         list_clusters()
     elif args.Action == 'terminate_cluster':
-        terminate_cluster(args.cluster_id)
+        if args.cluster_id is not None and args.cluster_id!= '':
+            terminate_cluster(args.cluster_id)
+        else:
+            print("The argument -idc is missing")
     elif args.Action == 'add_steps':
-        add_steps(args.sfile, args.cluster_id)        
+        if args.cluster_id is not None and args.sfile is not None\
+        and args.cluster_id != '' and args.sfile != '':
+            add_steps(args.sfile, args.cluster_id)
+        else:
+            print("The argument -idc or -steps is missing")
     elif args.Action == 'execute_steps':
-        execute_steps(args.cluster_id)
+        if args.cluster_id is not None and args.cluster_id!= '':
+            execute_steps(args.cluster_id)
+        else:
+            print("The argument -idc is missing")
     else:
         print("Action is invalid")
