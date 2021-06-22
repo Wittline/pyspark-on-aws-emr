@@ -66,8 +66,8 @@ def delete_security_groups(prefix_name, logger):
                         error.response['Error']['Code'] == 'DependencyViolation':
                      logger.warning(
                         "Attempt to delete security group got DependencyViolation. "
-                        "Waiting for 30 seconds to let things propagate.")
-                     time.sleep(30)
+                        "Waiting for 60 seconds to let things propagate.")
+                     time.sleep(60)
                 else:
                     raise
         logger.info("Deleted security groups")                  

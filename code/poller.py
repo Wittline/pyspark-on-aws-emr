@@ -18,6 +18,6 @@ def status_poller(intro, done_status, func, logger):
             sys.stdout.flush()
             break            
         sys.stdout.flush()
-        time.sleep(10)
+        time.sleep(30)
     print()
     logger.setLevel(logging.INFO)
