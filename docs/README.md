@@ -49,6 +49,111 @@ this file contains everything related to the fleet of ec2 spot and on-demand ins
 
 **executor memory + memory overhead < yarn.nodemanager.resource.memory-mb**
 
+```
+{
+    "InstanceFleets": [
+        {
+            "Name": "fleetmaster",
+            "InstanceFleetType": "MASTER",
+            "TargetOnDemandCapacity": 1,
+            "InstanceTypeConfigs": [
+                {"InstanceType":"m5.xlarge"}       
+            ]
+        },
+        {
+            "Name": "fleetcore",
+            "InstanceFleetType": "CORE",
+            "TargetOnDemandCapacity": 8,
+            "TargetSpotCapacity": 0,
+            "InstanceTypeConfigs": [
+                {"WeightedCapacity":8,"BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m5.2xlarge"},
+                {"WeightedCapacity":8, "BidPriceAsPercentageOfOnDemandPrice":100,"InstanceType":"m4.2xlarge"}
+            ]
+        },
+        {
+            "Name": "fleettask",
+            "InstanceFleetType": "TASK",
+            "TargetOnDemandCapacity":0,
+            "TargetSpotCapacity": 80,
+            "InstanceTypeConfigs": [
+
+                    {"WeightedCapacity":8,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"m5.2xlarge"
+                    },
+                    {"WeightedCapacity":8,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"m4.2xlarge"
+                    },
+                    {"WeightedCapacity":8,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"m5a.2xlarge"
+                    },
+                    {"WeightedCapacity":8,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"m6g.2xlarge"
+                    },
+                    {"WeightedCapacity":8,
+                     "BidPriceAsPercentageOfOnDemandPrice":100,
+                     "InstanceType":"r5.2xlarge"
+                    }
+            ],
+            "LaunchSpecifications": {
+                "SpotSpecification": {
+                    "TimeoutDurationMinutes": 60,
+                    "BlockDurationMinutes":60,
+                    "TimeoutAction": "TERMINATE_CLUSTER"
+                }
+            }
+        }
+    ],
+    "bootstrap_action": "bootstrap-action.sh",
+    "Configurations": [{        
+                    "Classification": "spark-env",
+                    "Properties":{},
+                    "Configurations": [{
+                    "Classification": "export",
+                    "Properties": {
+                        "PYSPARK_PYTHON": "/usr/bin/python3"
+                    }
+                    }]
+                },                
+                {                    
+                    "Classification": "spark-defaults",
+                    "Properties": {
+                        "spark.yarn.stagingDir": "hdfs:///tmp",
+                        "spark.yarn.preserve.staging.files": "true",
+                        "spark.kryoserializer.buffer.max": "2000M",
+                        "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+                        "spark.driver.maxResultSize": "0",
+                        "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:3.1.0"    
+                    }
+                },
+                  {
+                    "Classification": "spark",
+                    "Properties": {
+                      "maximizeResourceAllocation": "false"
+                    }
+                  },
+                  {
+                    "Classification": "mapred-site",
+                    "Properties": {
+                      "mapred.job.jvm.num.tasks": "-1"
+                    }
+                  },
+                  {
+                    "Classification": "yarn-site",
+                       "Properties": {
+                           "yarn.nodemanager.resource.memory-mb":"22888"
+                       }
+                     }                  
+                ],
+    "Ec2SubnetIds": [ "subnet-f384febf", "subnet-9cc763f7", "subnet-440e1c3e" ],  
+    "KeepJobFlowAliveWhenNoSteps": true
+}
+
+```
+
 8. **bootstrap-action.sh**: the first step of the pipeline will use <a href="https://nlp.johnsnowlabs.com/docs/en/install"> sparknlp </a>, the lines recomended by them were added to the bootstrap file plus other needed packages
 
 9. **steps.json**: this file contains all the logic to communicate the output of a step with the input of another step, if you want to modify this template for another type of project then all your steps must be explained in this file and the logic of how they communicate must to be here.
