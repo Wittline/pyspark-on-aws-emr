@@ -85,11 +85,5 @@ Any ideas or feedback about this repository?. Help me to improve it.
 ## License
 This project is licensed under the terms of the Apache License.
 
-Spot Fleet and On Demand Instances
-
-Create EMR
-S3, VPC, IAM
-
-
 
 
