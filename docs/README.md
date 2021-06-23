@@ -1,22 +1,29 @@
 # Building a Big Data Pipeline with PySpark and Amazon EMR on Spot Fleet and On-Demand Instances
 
-Si eres un cientifico de datos y quieres dar otro paso en tu carrera y convettirte en un cientifico aplicado debes dejar atras los proyectos escolares que involucran trabajar con datasets cortos pequeños o de tamaño medio, la verdadera naturaleza de un cientifico aplicado es saber aprovechar el computo a escala masiva, debes empezar a conocer las tecnologias disponibles para trabajar y procesar grandes conjuntos de datos y es aqui donde los skills en ingenieria de datos empiezan a ser relevantes para dar el siguiente paso en tu carrera, tambien, este nuevo cambio involucra mas responsabilidades tales como: Elegir un proveedor para computo en la nube, Crear arquitecturas escalables y cost-efetive, una estrategia para monitorear tus gastos y recursos, y el tunning de tus recursos etc. El objetivo de este proyecto es ofrecer una plantilla que puedes usar rapidamente si la necesidad de tu analisis involucra trabajar con millones de registros, la plantilla la puedes alterar facilmente para que soporte el tamaño de tu proyecto, y de esta forma no te preocuparas por crear todo dede el inicio y solo enfocarte en escribir pyspark code.
+If you are a data scientist and you are ready to take the next step in your career and become an applied scientist you must leave behind school projects that involve working with small datasets, the true nature of an applied scientist is knowing how to take advantage of computing on a massive scale, and the resources available to analyze large datasets in a cost-effective way, you must begin to know the technologies available to work and process large datasets and this is where data engineering skills begin to be relevant to take the next step in your career, also, this new change involves more responsibilities such as:
+
+1. Choose a provider for cloud computing
+2. Create scalable and cost-effective architectures
+3. A strategy to monitor your expenses and resources
+4. Tuning
+5. Be updated in technologies that allow you to do cloud computing in a profitable way.
+
+The goal of this project is to offer an <a href="https://aws.amazon.com/emr/getting-started/"> AWS EMR </a>template that you can use quickly if the need for your analysis involves working with millions of records, the template can be easily altered to support the size of your project and in this way you will not worry about creating everything from the begining and just focus on writing pyspark code.
 
 ## Architecture - Automate Word Cloud
 
 ![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/architecture.png)
 
 ## Data sources
-Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el <a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
+In order to reproduce the effect of working with a large dataset we are using the <a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, counting the different words that have the titles of the purchased books and creating word clouds for each year. This project does not focus on specific analysis, its objective is to create a big data pipeline and connect its different tasks involved using an AWS EMR cluster. You could use this same template for other types of projects or analysis.
 
 ## Infrastructure as Code (IaC) in AWS
-
-The aim of this section is to create a EMR cluster on AWS and keep it available for use by the PySpark tasks.
+This project is managing everything using boto3 IAC, the only thing in which you need to be focus is in write your PySpark code tasks or steps and write the logic of communication between these steps or tasks using the file steps.json. At the end, all these things will be your big data pipeline.
 
 ### File structure
 
 #### IAC files
-Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron modificados para crear este proyecto, puedes conseguir la fuente original de estos en la documentacion de amazon <a href="https://docs.aws.amazon.com/code-samples/latest/catalog/code-catalog-python-example_code-emr.html"> Python Code Samples for Amazon EMR </a>, los archivos de este proyecto son:
+Since the entire infrastructure is created by code, there are several files that were modified to create this project, you can get the original source in the amazon documentation <a href="https://docs.aws.amazon.com/code-samples/latest/catalog/code-catalog-python-example_code-emr.html"> Python Code Samples for Amazon EMR </a>, the modified files of this project are:
 
 1. **ec2.py**: this file helps us create the security groups in our VPC.
 2. **iam.py**: this file is for create the two associated roles: AmazonElasticMapReduceRole and AmazonElasticMapReduceforEC2Role.
@@ -124,7 +131,7 @@ If the property **input_dependency_from_output_step** is 1, then the output of t
 
 ## Running the example
 
-Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube donde te explica como correr el ejemplo paso a paso.
+If you do not want to read the steps below you can see this youtube video where it explains how to run the example step by step.
 
 ### Steps to follow:
 
@@ -173,7 +180,7 @@ ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
 python emr_process.py -a terminate_cluster -idc j-39DQEKGDZO6C0
 ```
 
-## Evolution of the word clouds extracted from the titles of books purchased on Amazon USA (1995 - 2015)
+## Evolution of the word clouds from the titles of books purchased on Amazon USA (1995 - 2015)
 
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
