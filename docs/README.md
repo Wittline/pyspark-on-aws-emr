@@ -1,4 +1,4 @@
-# Building a Big Data Pipeline with PySpark and Amazon EMR on Spot Fleet and On-Demand Instances
+# Building a Big Data Pipeline with PySpark and Amazon EMR on EC2 Spot Fleets and On-Demand Instances
 
 If you are a data scientist and you are ready to take the next step in your career and become an applied scientist you must leave behind school projects that involve working with small datasets, the true nature of an applied scientist is knowing how to take advantage of computing on a massive scale, and the resources available to analyze large datasets in a cost-effective way, you must begin to know the technologies available to work and process large datasets and this is where data engineering skills begin to be relevant to take the next step in your career, also, this new change involves more responsibilities such as:
 
