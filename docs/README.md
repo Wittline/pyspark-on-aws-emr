@@ -9,7 +9,6 @@ Si eres un cientifico de datos y quieres dar otro paso en tu carrera y convettir
 ## Data sources
 Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el<a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
 
-
 ## Infrastructure as Code (IaC) in AWS
 
 The aim of this section is to create a EMR cluster on AWS and keep it available for use by the PySpark tasks.
@@ -74,7 +73,9 @@ python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
 ## Contributing and Feedback
-Any ideas or feedback about this repository?. You can contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a>
+Any ideas or feedback about this repository?.
+<br>
+You can contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a>
 
 ## Authors
 - Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
