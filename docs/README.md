@@ -118,7 +118,7 @@ If the property **input_dependency_from_output_step** is 1, then the output of t
 #### PySpark code
 10. **pyspark_preprocessing_text.py**: this code is using spark nlp to preprocess the text included in the titles of books purchased on Amazon, extract the relevant words from the title of each book purchased and create another column called exploded_text.
 11. **pyspark_grouping_words.py**: this code is grouping by year all the words found in the title of books, its output is a dataset with all the words by year, it will be the input of the next step.
-12. **generate_clouds.py**: this file is receiving as a input the output of the last step and is generating word clouds by year.
+12. **generate_clouds.py**: this file is receiving as a input the output of the last step and is generating word clouds by year and putting each word cloud image in the S3 bucket of the project.
 
 ![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/steps_tasks.png)  
 
