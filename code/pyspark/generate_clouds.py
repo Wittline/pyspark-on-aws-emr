@@ -61,7 +61,7 @@ def execute_step(spark, input, output, args):
             wc.generate(text)
             path_file = path.join('tmp',f'word_cloud_{year}_us.png')
             wc.to_file(path_file)
-            to_s3(s3, path_file, args.prefix_name, 'output')        
+            to_s3(s3, path_file, args.prefix_name, 'output')  
 
         logger.info("Step ready...")
 
