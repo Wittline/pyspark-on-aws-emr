@@ -18,14 +18,15 @@ The aim of this section is to create a EMR cluster on AWS and keep it available 
 #### IAC files
 Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron modificados para crear este proyecto, puedes conseguir la fuente original de estos en la documentacion de amazon <a href="https://docs.aws.amazon.com/code-samples/latest/catalog/code-catalog-python-example_code-emr.html"> Python Code Samples for Amazon EMR </a>, los archivos de este proyecto son:
 
-- ec2.py: This file helps us create the security groups in our VPC.
-- iam.py: This file is for create the two associated roles: AmazonElasticMapReduceRole and AmazonElasticMapReduceforEC2Role.
-- s3.py: Control and manage the initial configuration that our S3 bucket needs, scripts, logs, configuration files, etc..
-- poller.py: This is checking a function for status each N seconds until reach a specified status.
-- emr.py: This file contains the functions to create an emr cluster and add steps to the cluster using boto3.
+1. **ec2.py**: This file helps us create the security groups in our VPC.
+- **iam.py**: This file is for create the two associated roles: AmazonElasticMapReduceRole and AmazonElasticMapReduceforEC2Role.
+- **s3.py**: Control and manage the initial configuration that our S3 bucket needs, scripts, logs, configuration files, etc..
+- **poller.py**: This is checking a function for status each N seconds until reach a specified status.
+- **emr.py**: This file contains the functions to create an emr cluster and add steps to the cluster using boto3.
 
 #### Main process:
-- emr_process.py
+- **emr_process.py**: This file is wrapping the basic functions of the boto3 library, the difference is that it is modified to interpret and understand our configuration files or project template.
+
 
 #### Configuration files:
 - cluster-ec2-spot-fleet.json
