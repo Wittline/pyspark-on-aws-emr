@@ -7,7 +7,7 @@ Si eres un cientifico de datos y quieres dar otro paso en tu carrera y convettir
 ![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/architecture.png)
 
 ## Data sources
-Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el<a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
+Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el <a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
 
 ## Infrastructure as Code (IaC) in AWS
 
@@ -16,7 +16,8 @@ The aim of this section is to create a EMR cluster on AWS and keep it available 
 ### File structure
 
 #### IAC files
-Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron modificados para crear este proyecto, puedes conseguir la fuente original de estos en la documentacion de amazon "Python Code Samples for Amazon EMR", los archivos de este proyecto son:
+Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron modificados para crear este proyecto, puedes conseguir la fuente original de estos en la documentacion de amazon <a href="https://docs.aws.amazon.com/code-samples/latest/catalog/code-catalog-python-example_code-emr.html"> Python Code Samples for Amazon EMR </a>, los archivos de este proyecto son:
+
 - ec2.py
 - iam.py
 - s3.py
