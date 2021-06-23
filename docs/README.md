@@ -71,18 +71,18 @@ python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
 
 
 
-# Word clouds of book titles purchased from Amazon USA (1995 - 2015)
+## Word clouds of book titles purchased from Amazon USA (1995 - 2015)
 
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
-# Contributing and Feedback
+## Contributing and Feedback
 Any ideas or feedback about this repository?. Help me to improve it.
 
-# Authors
+## Authors
 - Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
 - Created on June 2021
 
-# License
+## License
 This project is licensed under the terms of the Apache License.
 
 Spot Fleet and On Demand Instances
