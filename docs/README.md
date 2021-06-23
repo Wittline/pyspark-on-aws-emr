@@ -43,6 +43,8 @@ Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron
 11. **pyspark_grouping_words.py**:
 12. **generate_clouds.py**:
 
+![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/steps_tasks.png)  
+
 ## Running the example
 
 Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube donde te explica como correr el ejemplo paso a paso.
