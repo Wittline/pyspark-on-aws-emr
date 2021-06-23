@@ -31,6 +31,8 @@ Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron
     - add_steps
     - execute_steps
 
+![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/steps_flow.png)    
+
 #### Configuration files
 7. **cluster-ec2-spot-fleet.json**:
 8. **bootstrap-action.sh**:
@@ -51,6 +53,7 @@ Si no quieres leer los pasos a continuaciòn puedes ver este video de youtube do
 - Go to this url: <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html ">AWS CLI </a> and configure your AWS Credentials in your local machine
 - Install <a href="https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/">git-bash for windows</a>, once installed , open **git bash** and download this repository, this will download all the files needed.
 
+
 ``` 
 ramse@DESKTOP-K6K6E5A MINGW64 /c
 $ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
@@ -58,22 +61,20 @@ $ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
 
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
-python emr_process.py -a create_cluster -c Project1
+python emr_process.py -a create_cluster -c wittline
 ```
-
 
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
-python emr_process.py -a add_steps -steps steps.json -idc j-32XU1B7LJSSRO
+python emr_process.py -a add_steps -steps steps.json -idc j-39DQEKGDZO6C0
 ``
 
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
-python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
+python emr_process.py -a execute_steps -idc j-39DQEKGDZO6C0
 ``
 
-
-## Word clouds of book titles purchased from Amazon USA (1995 - 2015)
+## Word clouds of book titles purchased on Amazon USA (1995 - 2015)
 
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
@@ -88,6 +89,3 @@ You can contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank
 
 ## License
 This project is licensed under the terms of the Apache License.
-
-
-
