@@ -87,6 +87,13 @@ The name of the S3 bucket created on this case is: wittline-1624387595519505700
 aws s3 sync s3://wittline-1624387595519505700/output/ c:/word_clouds --exclude "output_step_0_0.parquet/*" --exclude "output_step_1_1.parquet/*"
 ```
 
+Remember to terminate your cluster and choose Yes to delete all resources created
+
+```
+ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
+python emr_process.py -a terminate_cluster -idc j-39DQEKGDZO6C0
+```
+
 ## Word clouds of book titles purchased on Amazon USA (1995 - 2015)
 
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
