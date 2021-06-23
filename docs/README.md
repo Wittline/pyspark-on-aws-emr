@@ -75,9 +75,9 @@ python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
 
 
 
+# Word clouds of book titles purchased on amazon from 1995 to 2015
 
-
-
+![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
 
 
