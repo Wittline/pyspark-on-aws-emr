@@ -185,7 +185,9 @@ python emr_process.py -a terminate_cluster -idc j-39DQEKGDZO6C0
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
 ## Contributing and Feedback
-Any ideas, feedback about this repository or do you need help to deploy it? Contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a> | <a href="https://coraspe-ramses.medium.com/" target="_blank">Medium</a>
+Any ideas or feedback about this repository? or do you need help to deploy it?
+
+Contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a> | <a href="https://coraspe-ramses.medium.com/" target="_blank">Medium</a>
 
 ## Authors
 - Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
