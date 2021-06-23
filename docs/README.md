@@ -6,14 +6,10 @@ Si eres un cientifico de datos y quieres dar otro paso en tu carrera y convettir
 
 # Architecture - Automate Word Cloud
 
-
+![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/architecture.png)
 
 # Data sources
-Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el "Amazon Customer Reviews" Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
-
-https://s3.amazonaws.com/amazon-reviews-pds/readme.html
-
-
+Para poder reproductir el efecto de trabajar con un dataset grande estamos usando el<a href="https://s3.amazonaws.com/amazon-reviews-pds/readme.html"> Amazon Customer Reviews </a> Dataset, y contando las diferentes palabras que tienen los titulos de sus libros comprados, crear nubes de palabras por cada año. Este proyecto no se enfoca en analisis especificos, su objetivo es crear un workflow de big data y conectar sus distintas tareas involucradas usando un cluster de AWS EMR. Podrias usar esta misma plantilla para otro tipo de proyectos o analisis.
 
 
 # Infrastructure as Code (IaC) in AWS
