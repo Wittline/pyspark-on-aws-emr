@@ -31,7 +31,7 @@ Ya que toda la infraestrucura se crea por codigo, hay varios archivos que fueron
     - add_steps
     - execute_steps
 
-#### Configuration files:
+#### Configuration files
 7. **cluster-ec2-spot-fleet.json**:
 8. **bootstrap-action.sh**:
 9. **steps.json**:
