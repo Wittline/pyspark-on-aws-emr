@@ -1,5 +1,3 @@
-# PySpark-on-AWS-EMR
-
 # Building a Big Data Pipeline with PySpark and Amazon EMR on Spot Fleet and On-Demand Instances
 
 Si eres un cientifico de datos y quieres dar otro paso en tu carrera y convettirte en un cientifico aplicado debes dejar atras los proyectos escolares que involucran trabajar con datasets cortos pequeños o de tamaño medio, la verdadera naturaleza de un cientifico aplicado es saber aprovechar el computo a escala masiva, debes empezar a conocer las tecnologias disponibles para trabajar y procesar grandes conjuntos de datos y es aqui donde los skills en ingenieria de datos empiezan a ser relevantes para dar el siguiente paso en tu carrera, tambien, este nuevo cambio involucra mas responsabilidades tales como: Elegir un proveedor para computo en la nube, Crear arquitecturas escalables y cost-efetive, una estrategia para monitorear tus gastos y recursos, y el tunning de tus recursos etc. El objetivo de este proyecto es ofrecer una plantilla que puedes usar rapidamente si la necesidad de tu analisis involucra trabajar con millones de registros, la plantilla la puedes alterar facilmente para que soporte el tamaño de tu proyecto, y de esta forma no te preocuparas por crear todo dede el inicio y solo enfocarte en escribir pyspark code.
@@ -73,13 +71,19 @@ python emr_process.py -a execute_steps -idc j-32XU1B7LJSSRO
 
 
 
-
-
 # Word clouds of book titles purchased on amazon from 1995 to 2015
 
 ![word_clouds](https://user-images.githubusercontent.com/8701464/123040480-6d3c2200-d3b9-11eb-864c-054d35e0156a.gif)
 
+# Contributing and Feedback
+Any ideas or feedback about this repository?. Help me to improve it.
 
+# Authors
+- Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
+- Created on June 2021
+
+# License
+This project is licensed under the terms of the Apache License.
 
 
 Spot Fleet and On Demand Instances
