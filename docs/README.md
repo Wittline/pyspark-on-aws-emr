@@ -59,20 +59,25 @@ ramse@DESKTOP-K6K6E5A MINGW64 /c
 $ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
 ```
 
+Now, Let's create a new AWS EMR cluster with the name: wittline
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
 python emr_process.py -a create_cluster -c wittline
 ```
 
+The above step will throw a new cluster id, this time was: "j-39DQEKGDZO6C0", the next step will upload the steps involved of the current cluster job to our S3 bucket of the project.
+
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
 python emr_process.py -a add_steps -steps steps.json -idc j-39DQEKGDZO6C0
-``
+```
+
+Once the steps were uploaded, now you can execute the steps, this action will read the steps from the S3 bucket of the project and will throw them to the job in the correct order.
 
 ```
 ramse@DESKTOP-K6K6E5A MINGW64 /c/pyspark-on-aws-emr/code
 python emr_process.py -a execute_steps -idc j-39DQEKGDZO6C0
-``
+```
 
 ## Word clouds of book titles purchased on Amazon USA (1995 - 2015)
 
