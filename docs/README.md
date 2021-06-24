@@ -294,7 +294,7 @@ python emr_process.py -a terminate_cluster -idc j-39DQEKGDZO6C0
 ## Contributing and Feedback
 Any ideas or feedback about this repository? or do you need help to deploy it?
 
-Contact me on <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a> | <a href="https://coraspe-ramses.medium.com/" target="_blank">Medium</a>
+Contact me on | <a href="https://twitter.com/RamsesCoraspe" target="_blank">Twitter</a> | <a href="https://www.linkedin.com/in/ramsescoraspe/" target="_blank">LinkedIn</a> | <a href="https://coraspe-ramses.medium.com/" target="_blank">Medium</a>
 
 ## Authors
 - Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
