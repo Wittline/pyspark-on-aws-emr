@@ -1,8 +1,7 @@
 {
 "steps":
     [
-        {
-            
+        {            
             "executor_memory": "18G",
             "executor_cores": "4",
             "description" : "Reading from dataset data and filtering",
