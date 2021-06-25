@@ -43,9 +43,8 @@ Since the entire infrastructure is created by code, there are several files that
 ![alt text](https://wittline.github.io/pyspark-on-aws-emr/Images/steps_flow.png)    
 
 #### Configuration files
-7. **cluster-ec2-spot-fleet.json**: 
 
-this file contains everything related to the fleet of ec2 spot and on-demand instances, it contains special configuration for spark and yarn, the property <a href="https://hadoop.apache.org/docs/r3.0.1/hadoop-yarn/hadoop-yarn-common/yarn-default.xml"> **yarn.nodemanager.resource.memory-mb** </a> is the amount of physical memory, in MB, that is reserved for non-YARN processes, was configured following the below rule:
+7. **cluster-ec2-spot-fleet.json**: this file contains everything related to the fleet of ec2 spot and on-demand instances, it contains special configuration for spark and yarn, the property <a href="https://hadoop.apache.org/docs/r3.0.1/hadoop-yarn/hadoop-yarn-common/yarn-default.xml"> **yarn.nodemanager.resource.memory-mb** </a> is the amount of physical memory, in MB, that is reserved for non-YARN processes, was configured following the below rule:
 
 **executor memory + memory overhead < yarn.nodemanager.resource.memory-mb**
 
