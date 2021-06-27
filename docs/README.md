@@ -2,8 +2,6 @@
 
 If you are a data scientist and you are ready to take the next step in your career and become an applied scientist you must leave behind school projects that involve working with small datasets, the true nature of an applied scientist is knowing how to take advantage of computing on a massive scale, and the resources available to analyze large datasets in a cost-effective way, you must begin to know the technologies available to work and process large datasets and this is where data engineering skills begin to be relevant to take the next step in your career, also, this new change involves more responsibilities such as:
 
-
-
 1. Choose a provider for cloud computing
 2. Create scalable and cost-effective architectures
 3. A strategy to monitor your expenses and resources
