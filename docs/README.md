@@ -235,7 +235,8 @@ If the property **input_dependency_from_output_step** is 1, then the output of t
 
 ## Running the example
 
-If you do not want to read the steps below you can see this youtube video where it explains how to run the example step by step.
+If you do not want to read the steps below you can see this <a href="https://youtu.be/VlFgMb74w2M">Youtube</a>  video where it explains how to run the example step by step.
+
 
 ### Steps to follow:
 
