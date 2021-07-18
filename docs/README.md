@@ -244,7 +244,6 @@ If you do not want to read the steps below you can see this <a href="https://you
 - Go to this url: <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html ">AWS CLI </a> and configure your AWS Credentials in your local machine
 - Install <a href="https://www.stanleyulili.com/git/how-to-install-git-bash-on-windows/">git-bash for windows</a>, once installed , open **git bash** and download this repository, this will download all the files needed.
 
-
 ``` 
 ramse@DESKTOP-K6K6E5A MINGW64 /c
 $ git clone https://github.com/Wittline/pyspark-on-aws-emr.git
