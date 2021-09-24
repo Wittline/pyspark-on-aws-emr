@@ -8,6 +8,8 @@ If you are a data scientist and you are ready to take the next step in your care
 4. Tuning
 5. Be updated in technologies that allow you to do cloud computing in a profitable way.
 
+
+
 The goal of this project is to offer an <a href="https://aws.amazon.com/emr/getting-started/"> AWS EMR </a>template that you can use quickly if the need for your analysis involves working with millions of records, the template can be easily altered to support the size of your project and in this way you will not worry about creating everything from the begining and just focus on writing pyspark code.
 
 ## Architecture - Automate Word Cloud
